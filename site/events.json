@@ -1,7 +1,7 @@
 {
  "app": "kapan",
  "repo": "irvan-putra/kapan",
- "generated_at": "2026-11-18T05:56:24.433354Z",
+ "generated_at": "2026-11-18T05:58:25.494616Z",
  "timezone": "Asia/Jakarta",
  "window_days": 90,
  "cities": [
@@ -15,10 +15,10 @@
    "name": "luma jakarta city page",
    "page_url": "https://lu.ma/jakarta",
    "feed_url": "https://lu.ma/jakarta",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 2,
-   "last_success_at": "2026-11-18T05:56:24.433354Z",
+   "last_success_at": "2026-11-18T05:58:25.494616Z",
    "calendars_found": 5
   },
   {
@@ -26,170 +26,170 @@
    "name": "Int Labs",
    "page_url": "https://lu.ma/calendar/cal-JvnoaS0DARrWVAX",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-JvnoaS0DARrWVAX",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "luma-cal-cal-LnUqLrWMs2RJoqF",
    "name": "Cyber Breaker",
    "page_url": "https://lu.ma/calendar/cal-LnUqLrWMs2RJoqF",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-LnUqLrWMs2RJoqF",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "luma-cal-cal-ltexIzUnSUtV2Ug",
    "name": "Personal",
    "page_url": "https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-ltexIzUnSUtV2Ug",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "luma-cal-cal-voSSwwLPSpm5LRL",
    "name": "Alibaba Cloud Indonesia",
    "page_url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-voSSwwLPSpm5LRL",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 2,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "luma-cal-cal-w2wxaF843RWo0uA",
    "name": "Personal",
    "page_url": "https://lu.ma/calendar/cal-w2wxaF843RWo0uA",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-w2wxaF843RWo0uA",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-aws-ug-jakarta",
    "name": "aws ug jakarta",
    "page_url": "https://www.meetup.com/aws-ug-jakarta/",
    "feed_url": "https://www.meetup.com/aws-ug-jakarta/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-owasp-jakarta-chapter",
    "name": "owasp jakarta chapter",
    "page_url": "https://www.meetup.com/owasp-jakarta-chapter/",
    "feed_url": "https://www.meetup.com/owasp-jakarta-chapter/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-gdg-jakarta",
    "name": "gdg jakarta",
    "page_url": "https://www.meetup.com/gdg-jakarta/",
    "feed_url": "https://www.meetup.com/gdg-jakarta/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-flutter-jakarta",
    "name": "flutter jakarta",
    "page_url": "https://www.meetup.com/flutter-jakarta/",
    "feed_url": "https://www.meetup.com/flutter-jakarta/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-jakarta-node-js-meetup",
    "name": "jakarta node js meetup",
    "page_url": "https://www.meetup.com/jakarta-node-js-meetup/",
    "feed_url": "https://www.meetup.com/jakarta-node-js-meetup/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-jakartas-linux-open-source-software-meetup-group",
    "name": "jakartas linux open source software meetup group",
    "page_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/",
    "feed_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-python-id",
    "name": "python id",
    "page_url": "https://www.meetup.com/python-id/",
    "feed_url": "https://www.meetup.com/python-id/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-gdg-jogjakarta",
    "name": "gdg jogjakarta",
    "page_url": "https://www.meetup.com/gdg-jogjakarta/",
    "feed_url": "https://www.meetup.com/gdg-jogjakarta/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-aws-user-group-jogja",
    "name": "aws user group jogja",
    "page_url": "https://www.meetup.com/aws-user-group-jogja/",
    "feed_url": "https://www.meetup.com/aws-user-group-jogja/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-aws-sbg-at-university-of-amikom-yogyakarta",
    "name": "aws sbg at university of amikom yogyakarta",
    "page_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/",
    "feed_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-yogyakarta-wordpress-meetup",
    "name": "yogyakarta wordpress meetup",
    "page_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/",
    "feed_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "meetup-stacks-indonesia",
    "name": "stacks indonesia",
    "page_url": "https://www.meetup.com/stacks-indonesia/",
    "feed_url": "https://www.meetup.com/stacks-indonesia/events/ical/",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "gdg-gdg-jakarta",
@@ -197,10 +197,10 @@
    "name": "gdg jakarta",
    "page_url": "https://gdg.community.dev/gdg-jakarta/",
    "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/642/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   },
   {
    "id": "gdg-gdg-jogjakarta",
@@ -208,10 +208,10 @@
    "name": "gdg jogjakarta",
    "page_url": "https://gdg.community.dev/gdg-jogjakarta/",
    "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/577/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short",
-   "fetched_at": "2026-11-18T05:56:24.433354Z",
+   "fetched_at": "2026-11-18T05:58:25.494616Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-18T05:56:24.433354Z"
+   "last_success_at": "2026-11-18T05:58:25.494616Z"
   }
  ],
  "events": [
@@ -236,7 +236,7 @@
    "end": "2026-11-20T14:00:00Z",
    "city": "jakarta",
    "online": false,
-   "venue": "Garuda Spark Innovation Hub - Jakarta, Jl. Jenderal Sudirman, RT.1/RW.3, Gelora, Kecamatan Tanah Abang, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10270, Indonesia",
+   "venue": "Garuda Spark Innovation Hub - Jakarta",
    "url": "https://lu.ma/ivoszlgx",
    "source": "luma",
    "organizer": "Cyber Breaker",
@@ -252,10 +252,10 @@
    "end": "2026-11-25T10:00:00Z",
    "city": "jakarta",
    "online": false,
-   "venue": "AWS (Amazon Web Services) Jakarta Office, Sinarmas MSIG Tower, Jl. Jenderal Sudirman No.Kav. 21 16th Floor, RT.12/RW.1, Kuningan, Karet, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12920, Indonesia",
+   "venue": "AWS (Amazon Web Services) Jakarta Office",
    "url": "https://lu.ma/ye9ovqrp",
    "source": "luma",
-   "organizer": "Personal",
+   "organizer": null,
    "uid": "luma-evt-E5gruzrIskfDE8h",
    "source_id": "luma-city-jakarta",
    "also_on": [

@@ -216,7 +216,7 @@ def fetch_luma_city(slug, city_id, cfg, source_log):
             if not is_dev_event(title, desc, cfg["dev_keywords"]):
                 continue
             geo = ev.get("geo_address_info") or {}
-            loc_text = geo.get("full_address") or geo.get("city_state") or geo.get("city") or ""
+            loc_text = geo.get("address") or geo.get("city_state") or geo.get("city") or geo.get("full_address") or ""
             online = ev.get("location_type") in ("online", "virtual") or is_online(loc_text)
             city = city_id if online else (classify_city(loc_text, cfg["cities"]) or city_id)
             try:
@@ -233,7 +233,7 @@ def fetch_luma_city(slug, city_id, cfg, source_log):
                 "title": title, "start": iso(dt), "end": iso(end) if end else None,
                 "city": city, "online": online, "venue": None if online else (loc_text or None),
                 "url": f"https://lu.ma/{ev.get('url')}" if ev.get("url") else page_url,
-                "source": "luma", "organizer": cal.get("name"),
+                "source": "luma", "organizer": None if (cal.get("name") or "").lower() in ("personal", "") else cal.get("name"),
                 "uid": f"luma-{ev.get('api_id')}", "source_id": f"luma-city-{slug}",
             })
         log.update(ok=True, count=len(events), last_success_at=iso(NOW))

@@ -69,7 +69,8 @@ function render(){
     const day = fmtDay.format(d);
     if(day!==lastDay){ html += `<div class="day">${day}</div>`; lastDay=day; }
     const time = fmtTime.format(d);
-    const where = e.online ? 'online' : (e.venue || 'venue to be announced');
+    let where = e.online ? 'online' : (e.venue || 'venue to be announced');
+    if(where.length>90) where = where.slice(0,87).replace(/[, ]+[^, ]*$/,'')+'…';
     const tags = [
       e.online ? '<span class="tag on">online</span>' : '',
       (!e.online && !e.venue) ? '<span class="tag tbd">venue tbd</span>' : '',
