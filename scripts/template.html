@@ -68,6 +68,9 @@ best effort, not exhaustive. every event links back to its organizer page.</p>
 const DATA = JSON.parse(document.getElementById('evdata').textContent);
 const evs = DATA.events || [];
 let city = '__CITY__';
+let daySel = null; // 'YYYY-MM-DD' in Asia/Jakarta
+const wibDay = d => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta'}).format(d);
+const calMonth = (()=>{ const p = wibDay(new Date()).split('-').map(Number); return {y:p[0], m:p[1]-1}; })();
 const fmtDay = new Intl.DateTimeFormat('en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Jakarta'});
 const fmtTime = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Jakarta'});
 function bucket(e){ return e.online ? 'online' : (e.city || 'tbd'); }
