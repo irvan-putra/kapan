@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__APPNAME__ - developer events in jakarta &amp; jogja</title>
+<meta name="description" content="upcoming developer events in jakarta and yogyakarta, gathered from public community pages. best effort, not exhaustive.">
+<link rel="alternate" type="text/calendar" href="__BASE__/events.ics" title="__APPNAME__ events feed">
+<style>
+:root{--bg:#0e0f13;--panel:#171a21;--line:#262b36;--text:#e8eaf0;--dim:#9aa3b2;--accent:#7ee0a3;--accent2:#7ec3e0}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,system-ui,"Segoe UI",roboto,sans-serif;max-width:760px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:1.6rem;letter-spacing:-.02em}
+.sub{color:var(--dim);margin:.2rem 0 1rem;font-size:.95rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 1.2rem}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:999px;padding:5px 14px;font-size:.9rem;cursor:pointer}
+.chip.on{color:#0c0d10;background:var(--accent);border-color:var(--accent);font-weight:600}
+.day{margin:1.4rem 0 .5rem;color:var(--dim);font-size:.85rem;text-transform:lowercase;letter-spacing:.04em;border-bottom:1px solid var(--line);padding-bottom:4px}
+.ev{display:block;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+.ev:hover{border-color:var(--accent)}
+.ev .t{font-weight:600}
+.ev .m{color:var(--dim);font-size:.85rem;margin-top:3px}
+.tag{display:inline-block;font-size:.72rem;border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-left:6px;color:var(--dim);vertical-align:middle}
+.tag.on{color:var(--accent2);border-color:var(--accent2)}
+.tag.tbd{color:#e0b47e;border-color:#e0b47e}
+.empty{color:var(--dim);background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:24px;text-align:center}
+footer{margin-top:3rem;color:var(--dim);font-size:.85rem;border-top:1px solid var(--line);padding-top:1rem}
+footer a{color:var(--accent2);text-decoration:none}
+.src{word-break:break-all}
+details{margin:.6rem 0}
+summary{cursor:pointer}
+a.brand{color:inherit}
+</style>
+</head>
+<body>
+<h1>__APPNAME__</h1>
+<p class="sub">developer events in jakarta &amp; jogja, gathered from public community pages.<br>
+best effort, not exhaustive. every event links back to its organizer page.</p>
+<p class="sub" style="margin-bottom:.6rem"><a class="brand" href="__BASE__/">all</a> · <a class="brand" href="__BASE__/jakarta/">jakarta</a> · <a class="brand" href="__BASE__/jogja/">jogja</a></p>
+<div class="chips" id="chips"></div>
+<div id="list"></div>
+<footer>
+<p>subscribe: <a href="__BASE__/events.ics">events.ics</a> (add by url in your calendar app) · source: <a href="https://github.com/__REPO__">github.com/__REPO__</a> · add a source: <a href="https://github.com/__REPO__/edit/main/sources.json">edit sources.json</a></p>
+<p id="meta"></p>
+<details><summary>sources &amp; freshness</summary><div id="srcs"></div></details>
+<p>missing something? that is expected - coverage depends on the public feeds listed above. pull requests adding sources are welcome.</p>
+</footer>
+<script id="evdata" type="application/json">__DATAJSON__</script>
+<script>
+const DATA = JSON.parse(document.getElementById('evdata').textContent);
+const evs = DATA.events || [];
+let city = '__CITY__';
+const fmtDay = new Intl.DateTimeFormat('en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Jakarta'});
+const fmtTime = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Jakarta'});
+function bucket(e){ return e.online ? 'online' : (e.city || 'tbd'); }
+function render(){
+  const chipsEl = document.getElementById('chips');
+  const counts = {all:evs.length, jakarta:0, jogja:0, online:0, tbd:0};
+  evs.forEach(e=>{counts[bucket(e)]++});
+  chipsEl.innerHTML = ['all','jakarta','jogja','online','tbd'].map(c=>
+    `<button class="chip ${c===city?'on':''}" data-c="${c}">${c==='tbd'?'venue tbd':c} (${counts[c]})</button>`).join('');
+  chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{city=b.dataset.c;render();});
+  const shown = evs.filter(e=> city==='all' || bucket(e)===city);
+  const list = document.getElementById('list');
+  if(!shown.length){ list.innerHTML = '<div class="empty">no upcoming events in this view right now.<br>check the sources below - new events appear as organizers publish them.</div>'; return; }
+  let html='', lastDay='';
+  for(const e of shown){
+    const d = new Date(e.start);
+    const day = fmtDay.format(d);
+    if(day!==lastDay){ html += `<div class="day">${day}</div>`; lastDay=day; }
+    const time = fmtTime.format(d);
+    const where = e.online ? 'online' : (e.venue || 'venue to be announced');
+    const tags = [
+      e.online ? '<span class="tag on">online</span>' : '',
+      (!e.online && !e.venue) ? '<span class="tag tbd">venue tbd</span>' : '',
+      e.recurring ? '<span class="tag">repeats</span>' : '',
+      `<span class="tag">${e.source}</span>`
+    ].join('');
+    html += `<a class="ev" href="${e.url}" target="_blank" rel="noopener"><div class="t">${e.title}</div><div class="m">${time} wib · ${where}${e.organizer?` · ${e.organizer}`:''}${tags}</div></a>`;
+  }
+  list.innerHTML = html;
+}
+const gen = new Date(DATA.generated_at);
+document.getElementById('meta').textContent = `updated ${fmtDay.format(gen)}, ${fmtTime.format(gen)} wib · ${evs.length} events · times in western indonesia time`;
+document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
+  const state = s.ok ? `${s.count} events` : `failed (${s.error||'error'})${s.kept_stale?`, showing ${s.kept_stale} older events`:''}`;
+  const fresh = s.last_success_at ? new Date(s.last_success_at) : null;
+  return `<p class="src">${s.ok?'✓':'✗'} <a href="${s.page_url}" target="_blank" rel="noopener">${s.name}</a> · ${state}${fresh?` · last ok ${fmtDay.format(fresh)}`:''}</p>`;
+}).join('');
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{
+  "cities": {
+    "jakarta": {
+      "label": "jakarta",
+      "region_terms": [
+        "jakarta"
+      ],
+      "luma_city_slug": "jakarta"
+    },
+    "jogja": {
+      "label": "jogja",
+      "region_terms": [
+        "yogyakarta",
+        "jogja",
+        "sleman",
+        "bantul"
+      ],
+      "luma_city_slug": null
+    }
+  },
+  "dev_keywords": [
+    "developer",
+    "develop",
+    "devops",
+    "programming",
+    "programmer",
+    "coding",
+    "code",
+    "software",
+    "engineer",
+    "web dev",
+    "javascript",
+    "typescript",
+    "python",
+    "golang",
+    "rust",
+    "java ",
+    "kotlin",
+    "flutter",
+    "react",
+    "node",
+    "aws",
+    "cloud",
+    "data",
+    "machine learning",
+    " ai ",
+    "artificial intelligence",
+    "llm",
+    "hackathon",
+    "tech",
+    "startup",
+    "open source",
+    "linux",
+    "cyber",
+    "security",
+    "blockchain",
+    "web3",
+    "gdg",
+    "owasp",
+    "api",
+    "frontend",
+    "backend",
+    "fullstack",
+    "ui/ux",
+    "devsecops",
+    "kubernetes",
+    "docker",
+    "database",
+    "sql",
+    "no-code",
+    "no code",
+    "git"
+  ],
+  "luma_calendars": [],
+  "meetup_groups": [
+    {
+      "slug": "aws-ug-jakarta",
+      "city": "jakarta"
+    },
+    {
+      "slug": "owasp-jakarta-chapter",
+      "city": "jakarta"
+    },
+    {
+      "slug": "gdg-jakarta",
+      "city": "jakarta"
+    },
+    {
+      "slug": "flutter-jakarta",
+      "city": "jakarta"
+    },
+    {
+      "slug": "jakarta-node-js-meetup",
+      "city": "jakarta"
+    },
+    {
+      "slug": "jakartas-linux-open-source-software-meetup-group",
+      "city": "jakarta"
+    },
+    {
+      "slug": "python-id",
+      "city": "jakarta"
+    },
+    {
+      "slug": "gdg-jogjakarta",
+      "city": "jogja"
+    },
+    {
+      "slug": "aws-user-group-jogja",
+      "city": "jogja"
+    },
+    {
+      "slug": "aws-sbg-at-university-of-amikom-yogyakarta",
+      "city": "jogja"
+    },
+    {
+      "slug": "yogyakarta-wordpress-meetup",
+      "city": "jogja"
+    },
+    {
+      "slug": "stacks-indonesia",
+      "city": "jogja"
+    }
+  ],
+  "gdg_chapters": [
+    {
+      "slug": "gdg-jakarta",
+      "city": "jakarta"
+    },
+    {
+      "slug": "gdg-jogjakarta",
+      "city": "jogja"
+    }
+  ]
+}
