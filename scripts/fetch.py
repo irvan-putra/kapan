@@ -413,9 +413,10 @@ def main():
             luma_calendars.update(cals)
     # 2. Luma calendar feeds (keyword filtered, city from venue text)
     for cal_id, cal_name in sorted(luma_calendars.items()):
+        label = cal_name if cal_name and cal_name.lower() != "personal" else f"luma community calendar {cal_id[-6:]}"
         feed = f"https://api.lu.ma/ics/get?entity=calendar&id={cal_id}"
         all_events.extend(fetch_ics_feed(
-            feed, f"luma-cal-{cal_id}", cal_name, f"https://lu.ma/calendar/{cal_id}",
+            feed, f"luma-cal-{cal_id}", label, f"https://lu.ma/calendar/{cal_id}",
             source_log, prev_events,
             dev_filter=cfg["dev_keywords"], cities=cfg["cities"]))
     # 3. Meetup group feeds (groups are hand-picked dev groups; city from venue text)
