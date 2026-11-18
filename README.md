@@ -25,6 +25,7 @@ an event is only listed when its venue or title shows jakarta or jogja, or when 
 ## honest limits
 
 - best effort, not exhaustive: an event that is not on a listed source does not appear
+- posters come from the organizer's own event page (luma cover images, meetup/gdg event images), hotlinked, best effort; events without one just show text
 - sources can fail or change; the site shows per-source status and last successful fetch, and keeps older events (marked) when a source is temporarily broken
 - recurring events are expanded up to 60 days ahead and tagged "repeats"
 - times are shown in western indonesia time (asia/jakarta)

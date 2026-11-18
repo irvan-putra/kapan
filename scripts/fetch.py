@@ -48,6 +48,35 @@ def iso(dt):
     return dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def fetch_og_image(url):
+    """Best-effort poster: the og:image of the organizer's own event page."""
+    try:
+        text = http_get(url, "text/html")
+    except Exception:
+        return None
+    m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', text)
+    if not m:
+        m = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', text)
+    if not m:
+        return None
+    u = m.group(1).strip().replace("&amp;", "&")
+    if u.startswith("https://"):
+        return u
+    return None
+
+
+def fetch_luma_event(api_id):
+    """Poster + real event page for a Luma ICS event (feeds carry no URL/image)."""
+    try:
+        d = json.loads(http_get(f"https://api.lu.ma/event/get?event_api_id={api_id}",
+                                "application/json"))
+        ev = d.get("event", {})
+        slug = ev.get("url")
+        return ev.get("cover_url"), (f"https://lu.ma/{slug}" if slug else None)
+    except Exception:
+        return None, None
+
+
 # ---------------- ICS parsing ----------------
 
 def unfold(text):
@@ -235,6 +264,7 @@ def fetch_luma_city(slug, city_id, cfg, source_log):
                 "url": f"https://lu.ma/{ev.get('url')}" if ev.get("url") else page_url,
                 "source": "luma", "organizer": None if (cal.get("name") or "").lower() in ("personal", "") else cal.get("name"),
                 "uid": f"luma-{ev.get('api_id')}", "source_id": f"luma-city-{slug}",
+                "poster": ev.get("cover_url"),
             })
         log.update(ok=True, count=len(events), last_success_at=iso(NOW))
         log["calendars_found"] = len(calendars)
@@ -317,7 +347,7 @@ def fetch_gdg_chapter(slug, source_log, prev, cfg):
             raise RuntimeError("chapter id not found on page")
         api = (f"https://gdg.community.dev/api/event_slim/for_chapter/{m.group(1)}/"
                "?page_size=20&status=Live&include_cohosted_events=true&order=start_date"
-               "&fields=title,start_date,end_date,event_type_title,url,description_short")
+               "&fields=title,start_date,end_date,event_type_title,url,description_short,picture")
         log["feed_url"] = api
         data = json.loads(http_get(api, "application/json"))
         for ev in data.get("results", []):
@@ -368,6 +398,7 @@ def fetch_gdg_chapter(slug, source_log, prev, cfg):
                 "organizer": slug.replace("-", " "),
                 "uid": f"gdg-{norm(title)}-{iso(dt)[:10]}", "source_id": source_id,
                 "venue_tbd": (venue is None and not online),
+                "poster": ev.get("picture") if ev.get("picture") and "DefaultEventThumbnail" not in ev.get("picture") else None,
             })
         log.update(ok=True, count=len(events), last_success_at=iso(NOW))
     except Exception as e:
@@ -443,6 +474,8 @@ def main():
             keep.setdefault("also_on", [])
             if drop["url"] != keep["url"] and drop["url"] not in keep["also_on"]:
                 keep["also_on"].append(drop["url"])
+            if not keep.get("poster") and drop.get("poster"):
+                keep["poster"] = drop["poster"]
             seen[key] = keep
             if keep not in deduped:
                 deduped.append(keep)
@@ -452,6 +485,31 @@ def main():
 
     # keep only events in our cities or online, within window
     final = [ev for ev in deduped if ev.get("online") or ev.get("city") in cfg["cities"]]
+
+    # posters: keep ones we already found, then best-effort og:image from the
+    # organizer's own event page for the rest (earliest events first)
+    prev_posters = {ev["uid"]: ev["poster"] for ev in prev_events if ev.get("uid") and ev.get("poster")}
+    for ev in final:
+        if not ev.get("poster") and ev["uid"] in prev_posters:
+            ev["poster"] = prev_posters[ev["uid"]]
+    enrich_left = min(12, MAX_HTTP - _http_count)
+    for ev in final:
+        if enrich_left <= 0:
+            break
+        if ev.get("poster"):
+            continue
+        m = re.fullmatch(r"(evt-[^@]+)@events\.lu\.ma", ev.get("uid") or "")
+        if m:
+            img, real_url = fetch_luma_event(m.group(1))
+            # feed linked only the calendar page: point at the event page instead
+            if real_url and ev["url"].startswith("https://lu.ma/calendar/"):
+                ev["url"] = real_url
+        else:
+            img = fetch_og_image(ev["url"])
+        enrich_left -= 1
+        if img:
+            ev["poster"] = img
+    posters = sum(1 for ev in final if ev.get("poster"))
 
     out = {
         "app": APP_NAME, "repo": REPO, "generated_at": iso(NOW),
@@ -509,7 +567,7 @@ def main():
         (d / "index.html").write_text(page)
 
     ok = sum(1 for s in source_log if s.get("ok"))
-    print(f"{len(final)} events, {ok}/{len(source_log)} sources ok, {_http_count} requests")
+    print(f"{len(final)} events ({posters} with posters), {ok}/{len(source_log)} sources ok, {_http_count} requests")
     for s in source_log:
         flag = "ok" if s.get("ok") else f"FAIL {s.get('error')}"
         print(f"  {s['id']}: {flag}, {s.get('count')} events" + (f" (kept {s['kept_stale']} stale)" if s.get("kept_stale") else ""))
