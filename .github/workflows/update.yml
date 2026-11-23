@@ -1,7 +1,7 @@
 name: update events
 on:
   schedule:
-    - cron: "23 */6 * * *"   # every ~6h; github may delay scheduled runs
+    - cron: "23 0 1 * *"   # monthly; github may delay scheduled runs
   workflow_dispatch:
   push:
     branches: [main]

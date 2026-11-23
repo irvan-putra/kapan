@@ -9,7 +9,7 @@ combined feed: https://vanipy.com/kapan/events.ics (subscribe by url in any cale
 
 ## how it works
 
-- a github actions job runs every few hours (and on demand)
+- a github actions job runs monthly (and on demand); github may delay scheduled runs, so events can be up to a month stale unless refreshed manually
 - `scripts/fetch.py` (python, standard library only) reads `sources.json`, fetches each source, and rewrites `site/events.json`, `site/events.ics` and `site/index.html`
 - github pages serves `site/` - fully static, no server, no keys, no accounts
 
