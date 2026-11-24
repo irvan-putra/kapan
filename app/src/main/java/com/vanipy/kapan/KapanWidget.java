@@ -53,7 +53,7 @@ public class KapanWidget extends AppWidgetProvider {
         for (int id : ids) renderOne(ctx, mgr, id);
     }
 
-    private static int cells(Bundle options, int key) {
+    private static int cells(Bundle options, String key) {
         int dp = options.getInt(key, 0);
         if (dp <= 0) return 2;
         return Math.max(1, (dp + 30) / 70);
