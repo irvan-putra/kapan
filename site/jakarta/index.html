@@ -56,6 +56,16 @@ h1{font-size:1.15rem;display:inline}
 best effort, not exhaustive. every event links back to its organizer page.</p>
 <p class="sub cities" style="margin-bottom:.6rem"><a class="brand" href="/kapan/">all</a> · <a class="brand" href="/kapan/jakarta/">jakarta</a> · <a class="brand" href="/kapan/jogja/">jogja</a></p>
 <div class="chips" id="chips"></div>
+<section id="next">
+<h2 class="day">next event</h2>
+<a class="ev" id="nextcard" target="_blank" rel="noopener">
+<div class="b">
+<div class="t" id="nexttitle"></div>
+<div class="m" id="nextwhen"></div>
+</div>
+<span class="tag on" id="nextleft" aria-live="polite"></span>
+</a>
+</section>
 <div id="list"></div>
 <footer>
 <p class="mobcities">city pages: <a href="/kapan/">all</a> · <a href="/kapan/jakarta/">jakarta</a> · <a href="/kapan/jogja/">jogja</a></p>
@@ -113,6 +123,26 @@ document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
   return `<p class="src">${s.ok?'✓':'✗'} <a href="${s.page_url}" target="_blank" rel="noopener">${s.name}</a> · ${state}${fresh?` · last ok ${fmtDay.format(fresh)}`:''}</p>`;
 }).join('');
 render();
+// countdown to the soonest upcoming event in the current city filter
+(function(){
+  const sec = document.getElementById('next');
+  const upcoming = cityFiltered().filter(e=>new Date(e.start).getTime()>Date.now())
+    .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  if(!upcoming){ sec.style.display='none'; return; }
+  const target = new Date(upcoming.start).getTime();
+  document.getElementById('nexttitle').textContent = upcoming.title || 'untitled event';
+  if(upcoming.url) document.getElementById('nextcard').href = upcoming.url;
+  document.getElementById('nextwhen').textContent = (fmtDay.format(target)+', '+fmtTime.format(target)+' wib').toLowerCase();
+  const pad = n => (n<10?'0':'')+n;
+  const tick = ()=>{
+    const ms = Math.max(0, target-Date.now());
+    let s = Math.floor(ms/1000);
+    const d = Math.floor(s/86400); s%=86400;
+    const h = Math.floor(s/3600), m = Math.floor(s%3600/60), sec2 = s%60;
+    document.getElementById('nextleft').textContent = (d>0?d+'d ':'')+pad(h)+':'+pad(m)+':'+pad(sec2);
+  };
+  tick(); setInterval(tick, 1000);
+})();
 </script>
 </body>
 </html>
