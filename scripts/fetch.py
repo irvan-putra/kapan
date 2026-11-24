@@ -415,6 +415,64 @@ def fetch_gdg_chapter(slug, source_log, prev, cfg):
     return events
 
 
+
+
+# ---------------- films (moviegoers tab) ----------------
+
+def parse_day(s):
+    """YYYY-MM-DD -> datetime at WIB day start, or None."""
+    if not s:
+        return None
+    try:
+        return datetime.strptime(s, "%Y-%m-%d").replace(tzinfo=WIB)
+    except ValueError:
+        return None
+
+
+def load_films(cfg, prev_films):
+    """Hand-tracked films/festivals from sources.json.
+
+    Cinema chain sites block automated fetches, so entries are curated: each
+    names the public page its date came from and when it was checked. Entries
+    without a confirmed date stay listed, marked unverified. A cinema release
+    stays listed for a typical 20-day run when no end is given; festivals and
+    series keep their configured end (or stay until edited). Posters reuse the
+    previous run's, then best-effort og:image from the source page.
+    """
+    films = []
+    cutoff = NOW - timedelta(days=1)
+    for f in cfg.get("films", []):
+        start = parse_day(f.get("start"))
+        end = parse_day(f.get("end"))
+        if start and not end and f.get("kind") == "cinema":
+            end = start + timedelta(days=20)  # typical indonesian run, varies by cinema
+        horizon = end or start
+        if horizon and horizon < cutoff:
+            continue
+        films.append({
+            "title": f.get("title") or "",
+            "kind": f.get("kind") or "cinema",
+            "cities": f.get("cities") or [],
+            "start": iso(start) if start else None,
+            "date_only": True,
+            "end": iso(end) if end else None,
+            "url": f.get("url") or "",
+            "source": f.get("source") or "",
+            "verified": bool(f.get("verified")),
+            "checked": f.get("checked"),
+            "note": f.get("note") or "",
+            "uid": "film-" + norm(f.get("title") or ""),
+        })
+    prev_posters = {pf["uid"]: pf["poster"] for pf in prev_films
+                    if pf.get("uid") and pf.get("poster")}
+    for f in films:
+        if f["uid"] in prev_posters:
+            f["poster"] = prev_posters[f["uid"]]
+    dated = sorted((f for f in films if f["start"]), key=lambda f: f["start"])
+    undated = [f for f in films if not f["start"]]
+    return dated + undated
+
+
 # ---------------- main ----------------
 
 def main():
@@ -432,6 +490,13 @@ def main():
         except Exception:
             old = {}
     prev_events = old.get("events", [])
+    prev_films = []
+    old_films_path = SITE / "films.json"
+    if old_films_path.exists():
+        try:
+            prev_films = json.loads(old_films_path.read_text()).get("films", [])
+        except Exception:
+            prev_films = []
 
     source_log, all_events = [], []
 
@@ -462,6 +527,9 @@ def main():
     # 4. GDG chapters on gdg.community.dev
     for ch in cfg.get("gdg_chapters", []):
         all_events.extend(fetch_gdg_chapter(ch["slug"], source_log, prev_events, cfg))
+
+    # 5. Moviegoers tab: curated film/festival entries
+    films = load_films(cfg, prev_films)
 
     # dedupe: same normalized title + same day = same event, keep first (richest wins below)
     seen, deduped = {}, []
@@ -511,6 +579,21 @@ def main():
             ev["poster"] = img
     posters = sum(1 for ev in final if ev.get("poster"))
 
+    enrich_left = MAX_HTTP - _http_count
+    for f in films:
+        if enrich_left <= 0:
+            break
+        if f.get("poster") or not f.get("url"):
+            continue
+        img = fetch_og_image(f["url"])
+        enrich_left -= 1
+        if img:
+            f["poster"] = img
+
+    films_out = {"app": APP_NAME, "generated_at": iso(NOW),
+                 "timezone": "Asia/Jakarta", "films": films}
+    old_films_path.write_text(json.dumps(films_out, indent=1, ensure_ascii=False))
+
     out = {
         "app": APP_NAME, "repo": REPO, "generated_at": iso(NOW),
         "timezone": "Asia/Jakarta", "window_days": WINDOW_DAYS,
@@ -558,16 +641,22 @@ def main():
     # render static page with embedded data
     tpl = (ROOT / "scripts" / "template.html").read_text()
     data_json = json.dumps(out, ensure_ascii=False).replace("</", "<\\/")
+    films_json = json.dumps(films_out, ensure_ascii=False).replace("</", "<\\/")
+    audiences_json = json.dumps(cfg.get("audiences") or
+        {"developers": {"label": "developers"}, "moviegoers": {"label": "moviegoers"}},
+        ensure_ascii=False)
     for sub, city in (("", "all"), ("jakarta", "jakarta"), ("jogja", "jogja")):
         page = tpl.replace("__APPNAME__", APP_NAME).replace("__REPO__", REPO) \
                   .replace("__DATAJSON__", data_json).replace("__CITY__", city) \
+                  .replace("__FILMSJSON__", films_json) \
+                  .replace("__AUDIENCESJSON__", audiences_json) \
                   .replace("__BASE__", "/" + APP_NAME + ("/" + sub if sub else ""))
         d = SITE / sub
         d.mkdir(parents=True, exist_ok=True)
         (d / "index.html").write_text(page)
 
     ok = sum(1 for s in source_log if s.get("ok"))
-    print(f"{len(final)} events ({posters} with posters), {ok}/{len(source_log)} sources ok, {_http_count} requests")
+    print(f"{len(final)} events ({posters} with posters), {len(films)} films, {ok}/{len(source_log)} sources ok, {_http_count} requests")
     for s in source_log:
         flag = "ok" if s.get("ok") else f"FAIL {s.get('error')}"
         print(f"  {s['id']}: {flag}, {s.get('count')} events" + (f" (kept {s['kept_stale']} stale)" if s.get("kept_stale") else ""))

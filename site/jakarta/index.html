@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>kapan - developer events in jakarta &amp; jogja</title>
-<meta name="description" content="upcoming developer events in jakarta and yogyakarta, gathered from public community pages. best effort, not exhaustive.">
+<title>kapan - developer events &amp; film dates in jakarta &amp; jogja</title>
+<meta name="description" content="upcoming developer events and film/festival dates in jakarta and yogyakarta, gathered from public community pages. best effort, not exhaustive.">
 <link rel="alternate" type="text/calendar" href="/kapan/jakarta/events.ics" title="kapan events feed">
 <style>
 :root{--bg:#0e0f13;--panel:#171a21;--line:#262b36;--text:#e8eaf0;--dim:#9aa3b2;--accent:#7ee0a3;--accent2:#7ec3e0}
@@ -12,9 +12,11 @@
 body{background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,system-ui,"Segoe UI",roboto,sans-serif;max-width:760px;margin:0 auto;padding:20px 16px 80px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 h1{font-size:1.6rem;letter-spacing:-.02em}
 .sub{color:var(--dim);margin:.2rem 0 1rem;font-size:.95rem}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 1.2rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 .6rem}
+.chips.filters{margin:0 0 1.2rem}
 .chip{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:999px;padding:5px 14px;font-size:.9rem;cursor:pointer}
 .chip.on{color:#0c0d10;background:var(--accent);border-color:var(--accent);font-weight:600}
+.chips.aud .chip.on{background:var(--accent2);border-color:var(--accent2)}
 .day{margin:1.4rem 0 .5rem;color:var(--dim);font-size:.85rem;text-transform:lowercase;letter-spacing:.04em;border-bottom:1px solid var(--line);padding-bottom:4px}
 .ev{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
 .ev .b{flex:1;min-width:0}
@@ -22,6 +24,7 @@ h1{font-size:1.6rem;letter-spacing:-.02em}
 .ev:hover{border-color:var(--accent)}
 .ev .t{font-weight:600}
 .ev .m{color:var(--dim);font-size:.85rem;margin-top:3px}
+.ev .n{color:var(--dim);font-size:.8rem;margin-top:3px;font-style:italic}
 .tag{display:inline-block;font-size:.72rem;border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-left:6px;color:var(--dim);vertical-align:middle}
 .tag.on{color:var(--accent2);border-color:var(--accent2)}
 .tag.tbd{color:#e0b47e;border-color:#e0b47e}
@@ -39,7 +42,8 @@ h1{font-size:1.15rem;display:inline}
 .sub{margin:.1rem 0 .3rem;font-size:.72rem;line-height:1.3}
 .sub.cities{display:none}
 .mobcities{display:block}
-.chips{gap:5px;margin:0 0 .35rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chips{gap:5px;margin:0 0 .25rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chips.filters{margin:0 0 .35rem}
 .chips::-webkit-scrollbar{display:none}
 .chip{padding:2px 9px;font-size:.74rem;white-space:nowrap;flex:none}
 .day{margin:.5rem 0 .25rem;font-size:.78rem;padding-bottom:2px}
@@ -47,17 +51,18 @@ h1{font-size:1.15rem;display:inline}
 .ev .p{width:48px;height:48px;border-radius:6px}
 .ev .t{font-size:.92rem;line-height:1.3}
 .ev .m{font-size:.76rem;margin-top:2px;line-height:1.3}
+.ev .n{font-size:.72rem;margin-top:2px}
 }
 </style>
 </head>
 <body>
 <h1>kapan</h1>
-<p class="sub">developer events in jakarta &amp; jogja, gathered from public community pages.<br>
-best effort, not exhaustive. every event links back to its organizer page.</p>
+<p class="sub" id="audsub"></p>
 <p class="sub cities" style="margin-bottom:.6rem"><a class="brand" href="/kapan/">all</a> · <a class="brand" href="/kapan/jakarta/">jakarta</a> · <a class="brand" href="/kapan/jogja/">jogja</a></p>
-<div class="chips" id="chips"></div>
+<div class="chips aud" id="audchips"></div>
+<div class="chips filters" id="chips"></div>
 <section id="next">
-<h2 class="day">next event</h2>
+<h2 class="day" id="nexthead">next event</h2>
 <a class="ev" id="nextcard" target="_blank" rel="noopener">
 <div class="b">
 <div class="t" id="nexttitle"></div>
@@ -69,22 +74,66 @@ best effort, not exhaustive. every event links back to its organizer page.</p>
 <div id="list"></div>
 <footer>
 <p class="mobcities">city pages: <a href="/kapan/">all</a> · <a href="/kapan/jakarta/">jakarta</a> · <a href="/kapan/jogja/">jogja</a></p>
-<p>subscribe: <a href="/kapan/jakarta/events.ics">events.ics</a> (add by url in your calendar app) · source: <a href="https://github.com/irvan-putra/kapan">github.com/irvan-putra/kapan</a> · add a source: <a href="https://github.com/irvan-putra/kapan/edit/main/sources.json">edit sources.json</a></p>
+<p>subscribe: <a href="/kapan/jakarta/events.ics">events.ics</a> (developer events; add by url in your calendar app) · source: <a href="https://github.com/irvan-putra/kapan">github.com/irvan-putra/kapan</a> · add a source or a film: <a href="https://github.com/irvan-putra/kapan/edit/main/sources.json">edit sources.json</a></p>
 <p id="meta"></p>
 <details><summary>sources &amp; freshness</summary><div id="srcs"></div></details>
-<p>missing something? that is expected - coverage depends on the public feeds listed above. pull requests adding sources are welcome.</p>
+<p id="filmhonesty"></p>
+<p>missing something? that is expected - coverage depends on the public sources listed above. pull requests adding sources are welcome.</p>
 </footer>
-<script id="evdata" type="application/json">{"app": "kapan", "repo": "irvan-putra/kapan", "generated_at": "2026-11-24T04:25:02.415423Z", "timezone": "Asia/Jakarta", "window_days": 90, "cities": ["jakarta", "jogja"], "sources": [{"id": "luma-city-jakarta", "type": "luma-city", "name": "luma jakarta city page", "page_url": "https://lu.ma/jakarta", "feed_url": "https://lu.ma/jakarta", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 2, "last_success_at": "2026-11-24T04:25:02.415423Z", "calendars_found": 6}, {"id": "luma-cal-cal-0mY59kiyIHcP3Cx", "name": "The Reader's Trail Activation", "page_url": "https://lu.ma/calendar/cal-0mY59kiyIHcP3Cx", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-0mY59kiyIHcP3Cx", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "luma-cal-cal-63iJeJNzGiVDSAC", "name": "luma community calendar iVDSAC", "page_url": "https://lu.ma/calendar/cal-63iJeJNzGiVDSAC", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-63iJeJNzGiVDSAC", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "luma-cal-cal-Mp1VFMzLld51zRB", "name": "Sip & Scale Jakarta", "page_url": "https://lu.ma/calendar/cal-Mp1VFMzLld51zRB", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-Mp1VFMzLld51zRB", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "luma-cal-cal-ltexIzUnSUtV2Ug", "name": "luma community calendar UtV2Ug", "page_url": "https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-ltexIzUnSUtV2Ug", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "luma-cal-cal-voSSwwLPSpm5LRL", "name": "Alibaba Cloud Indonesia", "page_url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-voSSwwLPSpm5LRL", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "luma-cal-cal-yrYsEKDQ91hPMWy", "name": "Build Club", "page_url": "https://lu.ma/calendar/cal-yrYsEKDQ91hPMWy", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-yrYsEKDQ91hPMWy", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 4, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-aws-ug-jakarta", "name": "aws ug jakarta", "page_url": "https://www.meetup.com/aws-ug-jakarta/", "feed_url": "https://www.meetup.com/aws-ug-jakarta/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-owasp-jakarta-chapter", "name": "owasp jakarta chapter", "page_url": "https://www.meetup.com/owasp-jakarta-chapter/", "feed_url": "https://www.meetup.com/owasp-jakarta-chapter/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-gdg-jakarta", "name": "gdg jakarta", "page_url": "https://www.meetup.com/gdg-jakarta/", "feed_url": "https://www.meetup.com/gdg-jakarta/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-flutter-jakarta", "name": "flutter jakarta", "page_url": "https://www.meetup.com/flutter-jakarta/", "feed_url": "https://www.meetup.com/flutter-jakarta/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-jakarta-node-js-meetup", "name": "jakarta node js meetup", "page_url": "https://www.meetup.com/jakarta-node-js-meetup/", "feed_url": "https://www.meetup.com/jakarta-node-js-meetup/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-jakartas-linux-open-source-software-meetup-group", "name": "jakartas linux open source software meetup group", "page_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/", "feed_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-python-id", "name": "python id", "page_url": "https://www.meetup.com/python-id/", "feed_url": "https://www.meetup.com/python-id/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-gdg-jogjakarta", "name": "gdg jogjakarta", "page_url": "https://www.meetup.com/gdg-jogjakarta/", "feed_url": "https://www.meetup.com/gdg-jogjakarta/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-aws-user-group-jogja", "name": "aws user group jogja", "page_url": "https://www.meetup.com/aws-user-group-jogja/", "feed_url": "https://www.meetup.com/aws-user-group-jogja/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-aws-sbg-at-university-of-amikom-yogyakarta", "name": "aws sbg at university of amikom yogyakarta", "page_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/", "feed_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-yogyakarta-wordpress-meetup", "name": "yogyakarta wordpress meetup", "page_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/", "feed_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "meetup-stacks-indonesia", "name": "stacks indonesia", "page_url": "https://www.meetup.com/stacks-indonesia/", "feed_url": "https://www.meetup.com/stacks-indonesia/events/ical/", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "gdg-gdg-jakarta", "type": "gdg", "name": "gdg jakarta", "page_url": "https://gdg.community.dev/gdg-jakarta/", "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/642/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}, {"id": "gdg-gdg-jogjakarta", "type": "gdg", "name": "gdg jogjakarta", "page_url": "https://gdg.community.dev/gdg-jogjakarta/", "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/577/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture", "fetched_at": "2026-11-24T04:25:02.415423Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:25:02.415423Z"}], "events": [{"title": "From SAP to AI: Building Your Data Foundation with Fivetran and Snowflake on AWS", "start": "2026-11-25T05:00:00Z", "end": "2026-11-25T10:00:00Z", "city": "jakarta", "online": false, "venue": "AWS (Amazon Web Services) Jakarta Office", "url": "https://lu.ma/ye9ovqrp", "source": "luma", "organizer": null, "uid": "luma-evt-E5gruzrIskfDE8h", "source_id": "luma-city-jakarta", "poster": "https://images.lumacdn.com/uploads/0t/7d9e40e3-d36c-4033-a802-1c2b875ddf06.png", "also_on": ["https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug"]}, {"title": "Build 24/7 AI Team for Your Businesses | Road to SCALECON 2027", "start": "2026-11-25T11:30:00Z", "end": "2026-11-25T14:30:00Z", "city": "jakarta", "online": false, "venue": "Centennial Tower", "url": "https://lu.ma/nqv9479h", "source": "luma", "organizer": "Build Club", "uid": "luma-evt-5zWDseFIaZufez0", "source_id": "luma-city-jakarta", "poster": "https://images.lumacdn.com/uploads/6g/41d00201-d10e-4191-b8df-0024269efa6e.png", "also_on": ["https://lu.ma/calendar/cal-yrYsEKDQ91hPMWy"]}, {"title": "On-site mini Hackathon (Qwen Conference 2026 Breakout session)", "start": "2026-11-26T08:30:00Z", "end": "2026-11-26T10:00:00Z", "city": "jakarta", "online": false, "venue": "Raffles Jakarta, Ciputra World, Jl. Prof. DR. Satrio No.Kav 3 – 5, RT.18/RW.4, Kuningan, Karet Kuningan, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12940, Indonesia", "url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL", "source": "luma", "organizer": "Alibaba Cloud Indonesia", "uid": "evt-tYJ8oBwUss7ttko@events.lu.ma", "venue_tbd": false, "source_id": "luma-cal-cal-voSSwwLPSpm5LRL", "recurring": false, "poster": "https://images.lumacdn.com/uploads/gf/aa8fc06b-c9f5-49ad-8e4e-a18bf4adca42.png"}, {"title": "OWASP Jakarta Security Week #2", "start": "2026-11-30T08:00:00Z", "end": "2026-11-30T09:00:00Z", "city": null, "online": true, "venue": null, "url": "https://www.meetup.com/owasp-jakarta-chapter/events/317297987/", "source": "meetup", "organizer": "owasp jakarta chapter", "uid": "event_317297987@meetup.com", "venue_tbd": false, "source_id": "meetup-owasp-jakarta-chapter", "recurring": false, "poster": "https://secure.meetupstatic.com/photos/event/d/e/c/1/600_476877025.jpeg"}, {"title": "AWS User Group Jakarta x Commvault: Race to Recover: Mission Earth", "start": "2026-12-09T10:00:00Z", "end": "2026-12-09T13:30:00Z", "city": "jakarta", "online": false, "venue": null, "url": "https://www.meetup.com/aws-ug-jakarta/events/317465233/", "source": "meetup", "organizer": "aws ug jakarta", "uid": "event_317465233@meetup.com", "venue_tbd": true, "source_id": "meetup-aws-ug-jakarta", "recurring": false, "poster": "https://secure.meetupstatic.com/photos/event/3/c/4/600_537180964.jpeg"}]}</script>
+<script id="evdata" type="application/json">{"app": "kapan", "repo": "irvan-putra/kapan", "generated_at": "2026-11-24T04:50:23.288760Z", "timezone": "Asia/Jakarta", "window_days": 90, "cities": ["jakarta", "jogja"], "sources": [{"id": "luma-city-jakarta", "type": "luma-city", "name": "luma jakarta city page", "page_url": "https://lu.ma/jakarta", "feed_url": "https://lu.ma/jakarta", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 2, "last_success_at": "2026-11-24T04:50:23.288760Z", "calendars_found": 6}, {"id": "luma-cal-cal-0mY59kiyIHcP3Cx", "name": "The Reader's Trail Activation", "page_url": "https://lu.ma/calendar/cal-0mY59kiyIHcP3Cx", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-0mY59kiyIHcP3Cx", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "luma-cal-cal-63iJeJNzGiVDSAC", "name": "luma community calendar iVDSAC", "page_url": "https://lu.ma/calendar/cal-63iJeJNzGiVDSAC", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-63iJeJNzGiVDSAC", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "luma-cal-cal-Mp1VFMzLld51zRB", "name": "Sip & Scale Jakarta", "page_url": "https://lu.ma/calendar/cal-Mp1VFMzLld51zRB", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-Mp1VFMzLld51zRB", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "luma-cal-cal-ltexIzUnSUtV2Ug", "name": "luma community calendar UtV2Ug", "page_url": "https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-ltexIzUnSUtV2Ug", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "luma-cal-cal-voSSwwLPSpm5LRL", "name": "Alibaba Cloud Indonesia", "page_url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-voSSwwLPSpm5LRL", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "luma-cal-cal-yrYsEKDQ91hPMWy", "name": "Build Club", "page_url": "https://lu.ma/calendar/cal-yrYsEKDQ91hPMWy", "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-yrYsEKDQ91hPMWy", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 4, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-aws-ug-jakarta", "name": "aws ug jakarta", "page_url": "https://www.meetup.com/aws-ug-jakarta/", "feed_url": "https://www.meetup.com/aws-ug-jakarta/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-owasp-jakarta-chapter", "name": "owasp jakarta chapter", "page_url": "https://www.meetup.com/owasp-jakarta-chapter/", "feed_url": "https://www.meetup.com/owasp-jakarta-chapter/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 1, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-gdg-jakarta", "name": "gdg jakarta", "page_url": "https://www.meetup.com/gdg-jakarta/", "feed_url": "https://www.meetup.com/gdg-jakarta/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-flutter-jakarta", "name": "flutter jakarta", "page_url": "https://www.meetup.com/flutter-jakarta/", "feed_url": "https://www.meetup.com/flutter-jakarta/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-jakarta-node-js-meetup", "name": "jakarta node js meetup", "page_url": "https://www.meetup.com/jakarta-node-js-meetup/", "feed_url": "https://www.meetup.com/jakarta-node-js-meetup/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-jakartas-linux-open-source-software-meetup-group", "name": "jakartas linux open source software meetup group", "page_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/", "feed_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-python-id", "name": "python id", "page_url": "https://www.meetup.com/python-id/", "feed_url": "https://www.meetup.com/python-id/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-gdg-jogjakarta", "name": "gdg jogjakarta", "page_url": "https://www.meetup.com/gdg-jogjakarta/", "feed_url": "https://www.meetup.com/gdg-jogjakarta/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-aws-user-group-jogja", "name": "aws user group jogja", "page_url": "https://www.meetup.com/aws-user-group-jogja/", "feed_url": "https://www.meetup.com/aws-user-group-jogja/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-aws-sbg-at-university-of-amikom-yogyakarta", "name": "aws sbg at university of amikom yogyakarta", "page_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/", "feed_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-yogyakarta-wordpress-meetup", "name": "yogyakarta wordpress meetup", "page_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/", "feed_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "meetup-stacks-indonesia", "name": "stacks indonesia", "page_url": "https://www.meetup.com/stacks-indonesia/", "feed_url": "https://www.meetup.com/stacks-indonesia/events/ical/", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "gdg-gdg-jakarta", "type": "gdg", "name": "gdg jakarta", "page_url": "https://gdg.community.dev/gdg-jakarta/", "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/642/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}, {"id": "gdg-gdg-jogjakarta", "type": "gdg", "name": "gdg jogjakarta", "page_url": "https://gdg.community.dev/gdg-jogjakarta/", "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/577/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture", "fetched_at": "2026-11-24T04:50:23.288760Z", "ok": true, "count": 0, "last_success_at": "2026-11-24T04:50:23.288760Z"}], "events": [{"title": "From SAP to AI: Building Your Data Foundation with Fivetran and Snowflake on AWS", "start": "2026-11-25T05:00:00Z", "end": "2026-11-25T10:00:00Z", "city": "jakarta", "online": false, "venue": "AWS (Amazon Web Services) Jakarta Office", "url": "https://lu.ma/ye9ovqrp", "source": "luma", "organizer": null, "uid": "luma-evt-E5gruzrIskfDE8h", "source_id": "luma-city-jakarta", "poster": "https://images.lumacdn.com/uploads/0t/7d9e40e3-d36c-4033-a802-1c2b875ddf06.png", "also_on": ["https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug"]}, {"title": "Build 24/7 AI Team for Your Businesses | Road to SCALECON 2027", "start": "2026-11-25T11:30:00Z", "end": "2026-11-25T14:30:00Z", "city": "jakarta", "online": false, "venue": "Centennial Tower", "url": "https://lu.ma/nqv9479h", "source": "luma", "organizer": "Build Club", "uid": "luma-evt-5zWDseFIaZufez0", "source_id": "luma-city-jakarta", "poster": "https://images.lumacdn.com/uploads/6g/41d00201-d10e-4191-b8df-0024269efa6e.png", "also_on": ["https://lu.ma/calendar/cal-yrYsEKDQ91hPMWy"]}, {"title": "On-site mini Hackathon (Qwen Conference 2026 Breakout session)", "start": "2026-11-26T08:30:00Z", "end": "2026-11-26T10:00:00Z", "city": "jakarta", "online": false, "venue": "Raffles Jakarta, Ciputra World, Jl. Prof. DR. Satrio No.Kav 3 – 5, RT.18/RW.4, Kuningan, Karet Kuningan, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12940, Indonesia", "url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL", "source": "luma", "organizer": "Alibaba Cloud Indonesia", "uid": "evt-tYJ8oBwUss7ttko@events.lu.ma", "venue_tbd": false, "source_id": "luma-cal-cal-voSSwwLPSpm5LRL", "recurring": false, "poster": "https://images.lumacdn.com/uploads/gf/aa8fc06b-c9f5-49ad-8e4e-a18bf4adca42.png"}, {"title": "OWASP Jakarta Security Week #2", "start": "2026-11-30T08:00:00Z", "end": "2026-11-30T09:00:00Z", "city": null, "online": true, "venue": null, "url": "https://www.meetup.com/owasp-jakarta-chapter/events/317297987/", "source": "meetup", "organizer": "owasp jakarta chapter", "uid": "event_317297987@meetup.com", "venue_tbd": false, "source_id": "meetup-owasp-jakarta-chapter", "recurring": false, "poster": "https://secure.meetupstatic.com/photos/event/d/e/c/1/600_476877025.jpeg"}, {"title": "AWS User Group Jakarta x Commvault: Race to Recover: Mission Earth", "start": "2026-12-09T10:00:00Z", "end": "2026-12-09T13:30:00Z", "city": "jakarta", "online": false, "venue": null, "url": "https://www.meetup.com/aws-ug-jakarta/events/317465233/", "source": "meetup", "organizer": "aws ug jakarta", "uid": "event_317465233@meetup.com", "venue_tbd": true, "source_id": "meetup-aws-ug-jakarta", "recurring": false, "poster": "https://secure.meetupstatic.com/photos/event/3/c/4/600_537180964.jpeg"}]}</script>
+<script id="filmdata" type="application/json">{"app": "kapan", "generated_at": "2026-11-24T04:50:23.288760Z", "timezone": "Asia/Jakarta", "films": [{"title": "Festival Sinema Prancis 2026", "kind": "festival", "cities": ["jakarta", "jogja"], "start": "2026-11-18T17:00:00Z", "date_only": true, "end": "2026-11-30T17:00:00Z", "url": "https://www.ifi-id.com/festival-sinema-prancis-2026/", "source": "institut français d'indonésie", "verified": true, "checked": "2026-11-24", "note": "28th edition: 20 french films in 19 cities incl. jakarta & yogyakarta, at xxi, ifi and partner venues", "uid": "film-festivalsinemaprancis2026", "poster": "https://www.ifi-id.com/wp-content/uploads/2026/11/FSP-2026-Web-Banner.jpg"}, {"title": "Hexed", "kind": "cinema", "cities": [], "start": "2026-11-26T17:00:00Z", "date_only": true, "end": "2026-12-16T17:00:00Z", "url": "https://m.21cineplex.com/movies/26HEXD", "source": "cinema xxi", "verified": true, "checked": "2026-11-24", "note": "walt disney animation studios; indonesian theatrical release 27 nov per cinema xxi. run length varies by cinema", "uid": "film-hexed", "poster": "https://nos.jkt-1.neo.id/media.cinema21.co.id/movie-images/26HEXD.jpg"}, {"title": "Jogja-NETPAC Asian Film Festival 2026", "kind": "festival", "cities": ["jogja"], "start": "2026-11-27T17:00:00Z", "date_only": true, "end": "2026-12-04T17:00:00Z", "url": "https://jaff-filmfest.org/schedule/", "source": "jaff official", "verified": true, "checked": "2026-11-24", "note": "21st edition in yogyakarta; five studios, program pdf on the site", "uid": "film-jogjanetpacasianfilmfestival2026"}, {"title": "Hexed on Disney+", "kind": "streaming", "cities": [], "start": null, "date_only": true, "end": null, "url": "https://www.disneyplus.com/explore/articles/hexed-disney-movie", "source": "disney+", "verified": false, "checked": "2026-11-24", "note": "disney says it comes to disney+ after the theatrical run; no date announced", "uid": "film-hexedondisney", "poster": "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/DEF9F2408206140DB281400B6A0BCD89DB69A8F0E22C2CFD31850ACF6B43A314/scale?format=webp&width=1200"}, {"title": "Kineforum monthly screenings", "kind": "series", "cities": ["jakarta"], "start": null, "date_only": true, "end": null, "url": "https://www.kineforum.org/", "source": "kineforum dkj", "verified": true, "checked": "2026-11-24", "note": "curated screenings at taman ismail marzuki; the month's titles go up on the site", "uid": "film-kineforummonthlyscreenings"}]}</script>
+<script id="auddata" type="application/json">{"developers": {"label": "developers"}, "moviegoers": {"label": "moviegoers"}}</script>
 <script>
 const DATA = JSON.parse(document.getElementById('evdata').textContent);
+const FILMS = (JSON.parse(document.getElementById('filmdata').textContent).films) || [];
+const AUDS = JSON.parse(document.getElementById('auddata').textContent);
+const AUD_KEYS = ['developers','moviegoers'];
+const audLabel = k => (AUDS[k] && AUDS[k].label) || k;
+const SUBS = {
+  developers: 'developer events in jakarta & jogja, gathered from public community pages.<br>best effort, not exhaustive. every event links back to its organizer page.',
+  moviegoers: 'films, festivals and streaming dates for moviegoers in jakarta & jogja, hand-tracked from public source pages.<br>each entry links the page its date came from; entries without a confirmed date are labeled.'
+};
 const evs = DATA.events || [];
 let city = 'jakarta';
+let aud = 'developers';
+const h = location.hash.replace('#','');
+if (AUD_KEYS.includes(h)) aud = h;
+else if (AUD_KEYS.includes(localStorage.getItem('kapan_aud'))) aud = localStorage.getItem('kapan_aud');
+let filmFilter = city === 'all' ? 'all' : city;
 const wibDay = d => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta'}).format(d);
 const fmtDay = new Intl.DateTimeFormat('en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Jakarta'});
+const fmtDayShort = new Intl.DateTimeFormat('en-US',{day:'numeric',month:'short',timeZone:'Asia/Jakarta'});
 const fmtTime = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Jakarta'});
 function bucket(e){ return e.online ? 'online' : (e.city || 'tbd'); }
 function cityFiltered(){ return evs.filter(e=> city==='all' || bucket(e)===city); }
+function filmMatches(f, flt){
+  if (flt === 'all') return true;
+  if (flt === 'cinema') return f.kind === 'cinema';
+  if (flt === 'streaming') return f.kind === 'streaming';
+  // a city filter keeps everything watchable there: local festivals/series,
+  // nationwide cinema releases and streaming
+  return (f.cities || []).includes(flt) || f.kind === 'cinema' || f.kind === 'streaming';
+}
+function filmFiltered(){ return FILMS.filter(f=>filmMatches(f, filmFilter)); }
+function renderAudChips(){
+  const el = document.getElementById('audchips');
+  el.innerHTML = AUD_KEYS.map(k=>
+    `<button class="chip ${k===aud?'on':''}" data-a="${k}">${audLabel(k)}</button>`).join('');
+  el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    aud = b.dataset.a;
+    localStorage.setItem('kapan_aud', aud);
+    history.replaceState(null, '', '#' + aud);
+    render();
+  });
+}
 function render(){
+  document.getElementById('audsub').innerHTML = SUBS[aud] || '';
+  renderAudChips();
+  document.getElementById('nexthead').textContent = aud === 'moviegoers' ? 'next date' : 'next event';
+  if (aud === 'developers') renderDev(); else renderFilms();
+  renderNext();
+}
+function renderDev(){
   const chipsEl = document.getElementById('chips');
   const counts = {all:evs.length, jakarta:0, jogja:0, online:0, tbd:0};
   evs.forEach(e=>{counts[bucket(e)]++});
@@ -115,22 +164,76 @@ function render(){
   }
   list.innerHTML = html;
 }
+function filmDates(f){
+  if(!f.start) return null;
+  const s = new Date(f.start), e = f.end ? new Date(f.end) : null;
+  if(e && wibDay(e) !== wibDay(s)) return fmtDayShort.format(s) + ' – ' + fmtDayShort.format(e);
+  return fmtDay.format(s).toLowerCase();
+}
+function filmWhere(f){
+  if (f.kind === 'cinema') return 'cinemas across indonesia';
+  if (f.kind === 'streaming') return 'streaming';
+  return (f.cities || []).join(' · ') || 'indonesia';
+}
+function renderFilms(){
+  const chipsEl = document.getElementById('chips');
+  const counts = {all:FILMS.length, cinema:0, jakarta:0, jogja:0, streaming:0};
+  FILMS.forEach(f=>{
+    if(f.kind==='cinema') counts.cinema++;
+    if(f.kind==='streaming') counts.streaming++;
+    (f.cities||[]).forEach(c=>{ if(c in counts) counts[c]++; });
+  });
+  const order = ['all','cinema','jakarta','jogja','streaming'];
+  const labels = {all:'all', cinema:'cinema', jakarta:'jakarta', jogja:'jogja', streaming:'streaming'};
+  chipsEl.innerHTML = order.map(c=>
+    `<button class="chip ${c===filmFilter?'on':''}" data-c="${c}">${labels[c]} (${counts[c]})</button>`).join('');
+  chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filmFilter=b.dataset.c;render();});
+  const shown = filmFiltered();
+  const list = document.getElementById('list');
+  if(!shown.length){ list.innerHTML = '<div class="empty">nothing tracked for this filter right now.<br>the moviegoers list is hand-tracked from the source pages below - films appear as their dates get announced.</div>'; return; }
+  let html='', lastDay='';
+  for(const f of shown){
+    const ds = filmDates(f);
+    const dayHead = ds ? fmtDay.format(new Date(f.start)) : 'ongoing & unconfirmed';
+    if(dayHead!==lastDay){ html += `<div class="day">${dayHead}</div>`; lastDay=dayHead; }
+    const tags = [
+      `<span class="tag">${f.kind}</span>`,
+      f.verified ? '' : '<span class="tag tbd">date unconfirmed</span>',
+      f.source ? `<span class="tag">${f.source}</span>` : ''
+    ].join('');
+    const poster = (f.poster && /^https:\/\//.test(f.poster))
+      ? `<img class="p" src="${f.poster.replace(/"/g,'')}" alt="${f.title.replace(/"/g,'&quot;')}" loading="lazy" referrerpolicy="no-referrer" onclick="event.preventDefault();event.stopPropagation();window.open(this.src,'_blank','noopener')" onerror="this.style.display='none'">`
+      : '';
+    html += `<a class="ev" href="${f.url}" target="_blank" rel="noopener"><div class="b"><div class="t">${f.title}</div><div class="m">${ds ? ds + ' · ' : ''}${filmWhere(f)}${tags}</div>${f.note?`<div class="n">${f.note}</div>`:''}</div>${poster}</a>`;
+  }
+  list.innerHTML = html;
+}
 const gen = new Date(DATA.generated_at);
-document.getElementById('meta').textContent = `updated ${fmtDay.format(gen)}, ${fmtTime.format(gen)} wib · ${evs.length} events · times in western indonesia time`;
+document.getElementById('meta').textContent = `updated ${fmtDay.format(gen)}, ${fmtTime.format(gen)} wib · ${evs.length} events · ${FILMS.length} film entries · times in western indonesia time`;
 document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
   const state = s.ok ? `${s.count} events` : `failed (${s.error||'error'})${s.kept_stale?`, showing ${s.kept_stale} older events`:''}`;
   const fresh = s.last_success_at ? new Date(s.last_success_at) : null;
   return `<p class="src">${s.ok?'✓':'✗'} <a href="${s.page_url}" target="_blank" rel="noopener">${s.name}</a> · ${state}${fresh?` · last ok ${fmtDay.format(fresh)}`:''}</p>`;
 }).join('');
+document.getElementById('filmhonesty').innerHTML = 'moviegoers entries are hand-tracked: cinema sites block automated fetches, so each date above is checked by a person on the linked source page (the checked day is in the data). entries labeled date unconfirmed have no announced date yet.';
+// countdown to the soonest upcoming item in the current audience and filter
+let countdownTimer = null;
 render();
-// countdown to the soonest upcoming event in the current city filter
-(function(){
+function renderNext(){
+  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
   const sec = document.getElementById('next');
-  const upcoming = cityFiltered().filter(e=>new Date(e.start).getTime()>Date.now())
-    .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  let upcoming;
+  if (aud === 'developers') {
+    upcoming = cityFiltered().filter(e=>new Date(e.start).getTime()>Date.now())
+      .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  } else {
+    upcoming = filmFiltered().filter(f=>f.start && new Date(f.start).getTime()>Date.now())
+      .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  }
   if(!upcoming){ sec.style.display='none'; return; }
+  sec.style.display='';
   const target = new Date(upcoming.start).getTime();
-  document.getElementById('nexttitle').textContent = upcoming.title || 'untitled event';
+  document.getElementById('nexttitle').textContent = upcoming.title || 'untitled';
   if(upcoming.url) document.getElementById('nextcard').href = upcoming.url;
   document.getElementById('nextwhen').textContent = (fmtDay.format(target)+', '+fmtTime.format(target)+' wib').toLowerCase();
   const pad = n => (n<10?'0':'')+n;
@@ -141,8 +244,8 @@ render();
     const h = Math.floor(s/3600), m = Math.floor(s%3600/60), sec2 = s%60;
     document.getElementById('nextleft').textContent = (d>0?d+'d ':'')+pad(h)+':'+pad(m)+':'+pad(sec2);
   };
-  tick(); setInterval(tick, 1000);
-})();
+  tick(); countdownTimer = setInterval(tick, 1000);
+}
 </script>
 </body>
 </html>

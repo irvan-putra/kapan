@@ -131,5 +131,77 @@
       "slug": "gdg-jogjakarta",
       "city": "jogja"
     }
+  ],
+  "audiences": {
+    "developers": {
+      "label": "developers"
+    },
+    "moviegoers": {
+      "label": "moviegoers"
+    }
+  },
+  "films": [
+    {
+      "title": "Festival Sinema Prancis 2026",
+      "kind": "festival",
+      "cities": [
+        "jakarta",
+        "jogja"
+      ],
+      "start": "2026-11-19",
+      "end": "2026-12-01",
+      "url": "https://www.ifi-id.com/festival-sinema-prancis-2026/",
+      "source": "institut français d'indonésie",
+      "verified": true,
+      "checked": "2026-11-24",
+      "note": "28th edition: 20 french films in 19 cities incl. jakarta & yogyakarta, at xxi, ifi and partner venues"
+    },
+    {
+      "title": "Hexed",
+      "kind": "cinema",
+      "cities": [],
+      "start": "2026-11-27",
+      "url": "https://m.21cineplex.com/movies/26HEXD",
+      "source": "cinema xxi",
+      "verified": true,
+      "checked": "2026-11-24",
+      "note": "walt disney animation studios; indonesian theatrical release 27 nov per cinema xxi. run length varies by cinema"
+    },
+    {
+      "title": "Jogja-NETPAC Asian Film Festival 2026",
+      "kind": "festival",
+      "cities": [
+        "jogja"
+      ],
+      "start": "2026-11-28",
+      "end": "2026-12-05",
+      "url": "https://jaff-filmfest.org/schedule/",
+      "source": "jaff official",
+      "verified": true,
+      "checked": "2026-11-24",
+      "note": "21st edition in yogyakarta; five studios, program pdf on the site"
+    },
+    {
+      "title": "Hexed on Disney+",
+      "kind": "streaming",
+      "cities": [],
+      "url": "https://www.disneyplus.com/explore/articles/hexed-disney-movie",
+      "source": "disney+",
+      "verified": false,
+      "checked": "2026-11-24",
+      "note": "disney says it comes to disney+ after the theatrical run; no date announced"
+    },
+    {
+      "title": "Kineforum monthly screenings",
+      "kind": "series",
+      "cities": [
+        "jakarta"
+      ],
+      "url": "https://www.kineforum.org/",
+      "source": "kineforum dkj",
+      "verified": true,
+      "checked": "2026-11-24",
+      "note": "curated screenings at taman ismail marzuki; the month's titles go up on the site"
+    }
   ]
 }

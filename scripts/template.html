@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>__APPNAME__ - developer events in jakarta &amp; jogja</title>
-<meta name="description" content="upcoming developer events in jakarta and yogyakarta, gathered from public community pages. best effort, not exhaustive.">
+<title>__APPNAME__ - developer events &amp; film dates in jakarta &amp; jogja</title>
+<meta name="description" content="upcoming developer events and film/festival dates in jakarta and yogyakarta, gathered from public community pages. best effort, not exhaustive.">
 <link rel="alternate" type="text/calendar" href="__BASE__/events.ics" title="__APPNAME__ events feed">
 <style>
 :root{--bg:#0e0f13;--panel:#171a21;--line:#262b36;--text:#e8eaf0;--dim:#9aa3b2;--accent:#7ee0a3;--accent2:#7ec3e0}
@@ -12,9 +12,11 @@
 body{background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,system-ui,"Segoe UI",roboto,sans-serif;max-width:760px;margin:0 auto;padding:20px 16px 80px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 h1{font-size:1.6rem;letter-spacing:-.02em}
 .sub{color:var(--dim);margin:.2rem 0 1rem;font-size:.95rem}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 1.2rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 .6rem}
+.chips.filters{margin:0 0 1.2rem}
 .chip{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:999px;padding:5px 14px;font-size:.9rem;cursor:pointer}
 .chip.on{color:#0c0d10;background:var(--accent);border-color:var(--accent);font-weight:600}
+.chips.aud .chip.on{background:var(--accent2);border-color:var(--accent2)}
 .day{margin:1.4rem 0 .5rem;color:var(--dim);font-size:.85rem;text-transform:lowercase;letter-spacing:.04em;border-bottom:1px solid var(--line);padding-bottom:4px}
 .ev{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
 .ev .b{flex:1;min-width:0}
@@ -22,6 +24,7 @@ h1{font-size:1.6rem;letter-spacing:-.02em}
 .ev:hover{border-color:var(--accent)}
 .ev .t{font-weight:600}
 .ev .m{color:var(--dim);font-size:.85rem;margin-top:3px}
+.ev .n{color:var(--dim);font-size:.8rem;margin-top:3px;font-style:italic}
 .tag{display:inline-block;font-size:.72rem;border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-left:6px;color:var(--dim);vertical-align:middle}
 .tag.on{color:var(--accent2);border-color:var(--accent2)}
 .tag.tbd{color:#e0b47e;border-color:#e0b47e}
@@ -39,7 +42,8 @@ h1{font-size:1.15rem;display:inline}
 .sub{margin:.1rem 0 .3rem;font-size:.72rem;line-height:1.3}
 .sub.cities{display:none}
 .mobcities{display:block}
-.chips{gap:5px;margin:0 0 .35rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chips{gap:5px;margin:0 0 .25rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chips.filters{margin:0 0 .35rem}
 .chips::-webkit-scrollbar{display:none}
 .chip{padding:2px 9px;font-size:.74rem;white-space:nowrap;flex:none}
 .day{margin:.5rem 0 .25rem;font-size:.78rem;padding-bottom:2px}
@@ -47,17 +51,18 @@ h1{font-size:1.15rem;display:inline}
 .ev .p{width:48px;height:48px;border-radius:6px}
 .ev .t{font-size:.92rem;line-height:1.3}
 .ev .m{font-size:.76rem;margin-top:2px;line-height:1.3}
+.ev .n{font-size:.72rem;margin-top:2px}
 }
 </style>
 </head>
 <body>
 <h1>__APPNAME__</h1>
-<p class="sub">developer events in jakarta &amp; jogja, gathered from public community pages.<br>
-best effort, not exhaustive. every event links back to its organizer page.</p>
+<p class="sub" id="audsub"></p>
 <p class="sub cities" style="margin-bottom:.6rem"><a class="brand" href="/__APPNAME__/">all</a> · <a class="brand" href="/__APPNAME__/jakarta/">jakarta</a> · <a class="brand" href="/__APPNAME__/jogja/">jogja</a></p>
-<div class="chips" id="chips"></div>
+<div class="chips aud" id="audchips"></div>
+<div class="chips filters" id="chips"></div>
 <section id="next">
-<h2 class="day">next event</h2>
+<h2 class="day" id="nexthead">next event</h2>
 <a class="ev" id="nextcard" target="_blank" rel="noopener">
 <div class="b">
 <div class="t" id="nexttitle"></div>
@@ -69,22 +74,66 @@ best effort, not exhaustive. every event links back to its organizer page.</p>
 <div id="list"></div>
 <footer>
 <p class="mobcities">city pages: <a href="/__APPNAME__/">all</a> · <a href="/__APPNAME__/jakarta/">jakarta</a> · <a href="/__APPNAME__/jogja/">jogja</a></p>
-<p>subscribe: <a href="__BASE__/events.ics">events.ics</a> (add by url in your calendar app) · source: <a href="https://github.com/__REPO__">github.com/__REPO__</a> · add a source: <a href="https://github.com/__REPO__/edit/main/sources.json">edit sources.json</a></p>
+<p>subscribe: <a href="__BASE__/events.ics">events.ics</a> (developer events; add by url in your calendar app) · source: <a href="https://github.com/__REPO__">github.com/__REPO__</a> · add a source or a film: <a href="https://github.com/__REPO__/edit/main/sources.json">edit sources.json</a></p>
 <p id="meta"></p>
 <details><summary>sources &amp; freshness</summary><div id="srcs"></div></details>
-<p>missing something? that is expected - coverage depends on the public feeds listed above. pull requests adding sources are welcome.</p>
+<p id="filmhonesty"></p>
+<p>missing something? that is expected - coverage depends on the public sources listed above. pull requests adding sources are welcome.</p>
 </footer>
 <script id="evdata" type="application/json">__DATAJSON__</script>
+<script id="filmdata" type="application/json">__FILMSJSON__</script>
+<script id="auddata" type="application/json">__AUDIENCESJSON__</script>
 <script>
 const DATA = JSON.parse(document.getElementById('evdata').textContent);
+const FILMS = (JSON.parse(document.getElementById('filmdata').textContent).films) || [];
+const AUDS = JSON.parse(document.getElementById('auddata').textContent);
+const AUD_KEYS = ['developers','moviegoers'];
+const audLabel = k => (AUDS[k] && AUDS[k].label) || k;
+const SUBS = {
+  developers: 'developer events in jakarta & jogja, gathered from public community pages.<br>best effort, not exhaustive. every event links back to its organizer page.',
+  moviegoers: 'films, festivals and streaming dates for moviegoers in jakarta & jogja, hand-tracked from public source pages.<br>each entry links the page its date came from; entries without a confirmed date are labeled.'
+};
 const evs = DATA.events || [];
 let city = '__CITY__';
+let aud = 'developers';
+const h = location.hash.replace('#','');
+if (AUD_KEYS.includes(h)) aud = h;
+else if (AUD_KEYS.includes(localStorage.getItem('kapan_aud'))) aud = localStorage.getItem('kapan_aud');
+let filmFilter = city === 'all' ? 'all' : city;
 const wibDay = d => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta'}).format(d);
 const fmtDay = new Intl.DateTimeFormat('en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Jakarta'});
+const fmtDayShort = new Intl.DateTimeFormat('en-US',{day:'numeric',month:'short',timeZone:'Asia/Jakarta'});
 const fmtTime = new Intl.DateTimeFormat('en-US',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Jakarta'});
 function bucket(e){ return e.online ? 'online' : (e.city || 'tbd'); }
 function cityFiltered(){ return evs.filter(e=> city==='all' || bucket(e)===city); }
+function filmMatches(f, flt){
+  if (flt === 'all') return true;
+  if (flt === 'cinema') return f.kind === 'cinema';
+  if (flt === 'streaming') return f.kind === 'streaming';
+  // a city filter keeps everything watchable there: local festivals/series,
+  // nationwide cinema releases and streaming
+  return (f.cities || []).includes(flt) || f.kind === 'cinema' || f.kind === 'streaming';
+}
+function filmFiltered(){ return FILMS.filter(f=>filmMatches(f, filmFilter)); }
+function renderAudChips(){
+  const el = document.getElementById('audchips');
+  el.innerHTML = AUD_KEYS.map(k=>
+    `<button class="chip ${k===aud?'on':''}" data-a="${k}">${audLabel(k)}</button>`).join('');
+  el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    aud = b.dataset.a;
+    localStorage.setItem('kapan_aud', aud);
+    history.replaceState(null, '', '#' + aud);
+    render();
+  });
+}
 function render(){
+  document.getElementById('audsub').innerHTML = SUBS[aud] || '';
+  renderAudChips();
+  document.getElementById('nexthead').textContent = aud === 'moviegoers' ? 'next date' : 'next event';
+  if (aud === 'developers') renderDev(); else renderFilms();
+  renderNext();
+}
+function renderDev(){
   const chipsEl = document.getElementById('chips');
   const counts = {all:evs.length, jakarta:0, jogja:0, online:0, tbd:0};
   evs.forEach(e=>{counts[bucket(e)]++});
@@ -115,22 +164,76 @@ function render(){
   }
   list.innerHTML = html;
 }
+function filmDates(f){
+  if(!f.start) return null;
+  const s = new Date(f.start), e = f.end ? new Date(f.end) : null;
+  if(e && wibDay(e) !== wibDay(s)) return fmtDayShort.format(s) + ' – ' + fmtDayShort.format(e);
+  return fmtDay.format(s).toLowerCase();
+}
+function filmWhere(f){
+  if (f.kind === 'cinema') return 'cinemas across indonesia';
+  if (f.kind === 'streaming') return 'streaming';
+  return (f.cities || []).join(' · ') || 'indonesia';
+}
+function renderFilms(){
+  const chipsEl = document.getElementById('chips');
+  const counts = {all:FILMS.length, cinema:0, jakarta:0, jogja:0, streaming:0};
+  FILMS.forEach(f=>{
+    if(f.kind==='cinema') counts.cinema++;
+    if(f.kind==='streaming') counts.streaming++;
+    (f.cities||[]).forEach(c=>{ if(c in counts) counts[c]++; });
+  });
+  const order = ['all','cinema','jakarta','jogja','streaming'];
+  const labels = {all:'all', cinema:'cinema', jakarta:'jakarta', jogja:'jogja', streaming:'streaming'};
+  chipsEl.innerHTML = order.map(c=>
+    `<button class="chip ${c===filmFilter?'on':''}" data-c="${c}">${labels[c]} (${counts[c]})</button>`).join('');
+  chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filmFilter=b.dataset.c;render();});
+  const shown = filmFiltered();
+  const list = document.getElementById('list');
+  if(!shown.length){ list.innerHTML = '<div class="empty">nothing tracked for this filter right now.<br>the moviegoers list is hand-tracked from the source pages below - films appear as their dates get announced.</div>'; return; }
+  let html='', lastDay='';
+  for(const f of shown){
+    const ds = filmDates(f);
+    const dayHead = ds ? fmtDay.format(new Date(f.start)) : 'ongoing & unconfirmed';
+    if(dayHead!==lastDay){ html += `<div class="day">${dayHead}</div>`; lastDay=dayHead; }
+    const tags = [
+      `<span class="tag">${f.kind}</span>`,
+      f.verified ? '' : '<span class="tag tbd">date unconfirmed</span>',
+      f.source ? `<span class="tag">${f.source}</span>` : ''
+    ].join('');
+    const poster = (f.poster && /^https:\/\//.test(f.poster))
+      ? `<img class="p" src="${f.poster.replace(/"/g,'')}" alt="${f.title.replace(/"/g,'&quot;')}" loading="lazy" referrerpolicy="no-referrer" onclick="event.preventDefault();event.stopPropagation();window.open(this.src,'_blank','noopener')" onerror="this.style.display='none'">`
+      : '';
+    html += `<a class="ev" href="${f.url}" target="_blank" rel="noopener"><div class="b"><div class="t">${f.title}</div><div class="m">${ds ? ds + ' · ' : ''}${filmWhere(f)}${tags}</div>${f.note?`<div class="n">${f.note}</div>`:''}</div>${poster}</a>`;
+  }
+  list.innerHTML = html;
+}
 const gen = new Date(DATA.generated_at);
-document.getElementById('meta').textContent = `updated ${fmtDay.format(gen)}, ${fmtTime.format(gen)} wib · ${evs.length} events · times in western indonesia time`;
+document.getElementById('meta').textContent = `updated ${fmtDay.format(gen)}, ${fmtTime.format(gen)} wib · ${evs.length} events · ${FILMS.length} film entries · times in western indonesia time`;
 document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
   const state = s.ok ? `${s.count} events` : `failed (${s.error||'error'})${s.kept_stale?`, showing ${s.kept_stale} older events`:''}`;
   const fresh = s.last_success_at ? new Date(s.last_success_at) : null;
   return `<p class="src">${s.ok?'✓':'✗'} <a href="${s.page_url}" target="_blank" rel="noopener">${s.name}</a> · ${state}${fresh?` · last ok ${fmtDay.format(fresh)}`:''}</p>`;
 }).join('');
+document.getElementById('filmhonesty').innerHTML = 'moviegoers entries are hand-tracked: cinema sites block automated fetches, so each date above is checked by a person on the linked source page (the checked day is in the data). entries labeled date unconfirmed have no announced date yet.';
+// countdown to the soonest upcoming item in the current audience and filter
+let countdownTimer = null;
 render();
-// countdown to the soonest upcoming event in the current city filter
-(function(){
+function renderNext(){
+  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
   const sec = document.getElementById('next');
-  const upcoming = cityFiltered().filter(e=>new Date(e.start).getTime()>Date.now())
-    .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  let upcoming;
+  if (aud === 'developers') {
+    upcoming = cityFiltered().filter(e=>new Date(e.start).getTime()>Date.now())
+      .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  } else {
+    upcoming = filmFiltered().filter(f=>f.start && new Date(f.start).getTime()>Date.now())
+      .sort((a,b)=>new Date(a.start)-new Date(b.start))[0];
+  }
   if(!upcoming){ sec.style.display='none'; return; }
+  sec.style.display='';
   const target = new Date(upcoming.start).getTime();
-  document.getElementById('nexttitle').textContent = upcoming.title || 'untitled event';
+  document.getElementById('nexttitle').textContent = upcoming.title || 'untitled';
   if(upcoming.url) document.getElementById('nextcard').href = upcoming.url;
   document.getElementById('nextwhen').textContent = (fmtDay.format(target)+', '+fmtTime.format(target)+' wib').toLowerCase();
   const pad = n => (n<10?'0':'')+n;
@@ -141,8 +244,8 @@ render();
     const h = Math.floor(s/3600), m = Math.floor(s%3600/60), sec2 = s%60;
     document.getElementById('nextleft').textContent = (d>0?d+'d ':'')+pad(h)+':'+pad(m)+':'+pad(sec2);
   };
-  tick(); setInterval(tick, 1000);
-})();
+  tick(); countdownTimer = setInterval(tick, 1000);
+}
 </script>
 </body>
 </html>

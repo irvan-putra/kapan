@@ -1,0 +1,111 @@
+package com.vanipy.kapan;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.RemoteViews;
+
+/**
+ * Home-screen widget: the next developer event and the next film date.
+ * Redraws from the on-phone cache on the system's 30-minute tick and fetches
+ * over the network only when the cache is older than three hours, so the
+ * widget costs no polling worth mentioning. At 1x1 it is a small circular
+ * countdown (one number); larger sizes list both audiences.
+ */
+public class KapanWidget extends AppWidgetProvider {
+
+    private static final long FETCH_IF_OLDER_MS = 3L * 3_600_000L;
+
+    @Override
+    public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
+        renderAll(ctx, mgr, ids);
+        if (System.currentTimeMillis() - KapanData.lastFetched(ctx) > FETCH_IF_OLDER_MS) {
+            PendingResult pending = goAsync();
+            new Thread(() -> {
+                try {
+                    KapanData.fetch(ctx);
+                    AppWidgetManager m = AppWidgetManager.getInstance(ctx);
+                    int[] all = m.getAppWidgetIds(new ComponentName(ctx, KapanWidget.class));
+                    renderAll(ctx, m, all);
+                } finally {
+                    pending.finish();
+                }
+            }).start();
+        }
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context ctx, AppWidgetManager mgr, int id, Bundle newOptions) {
+        renderOne(ctx, mgr, id);
+    }
+
+    static void updateAll(Context ctx) {
+        AppWidgetManager m = AppWidgetManager.getInstance(ctx);
+        int[] all = m.getAppWidgetIds(new ComponentName(ctx, KapanWidget.class));
+        renderAll(ctx, m, all);
+    }
+
+    private static void renderAll(Context ctx, AppWidgetManager mgr, int[] ids) {
+        for (int id : ids) renderOne(ctx, mgr, id);
+    }
+
+    private static int cells(Bundle options, int key) {
+        int dp = options.getInt(key, 0);
+        if (dp <= 0) return 2;
+        return Math.max(1, (dp + 30) / 70);
+    }
+
+    private static void renderOne(Context ctx, AppWidgetManager mgr, int id) {
+        Bundle options = mgr.getAppWidgetOptions(id);
+        int cols = cells(options, AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int rows = cells(options, AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        long now = System.currentTimeMillis();
+        RemoteViews views;
+        if (cols <= 1 && rows <= 1) {
+            views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget_small);
+            KapanData.Item next = KapanData.nextAny(ctx, now);
+            if (next != null) {
+                views.setTextViewText(R.id.w_big, Format.untilNumber(now, next.start));
+                views.setTextViewText(R.id.w_label, Format.untilUnit(now, next.start)
+                        + " · " + shortName(next.title));
+            } else {
+                views.setTextViewText(R.id.w_big, "-");
+                views.setTextViewText(R.id.w_label, "kapan");
+            }
+        } else {
+            views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget);
+            KapanData.Item dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
+            KapanData.Item film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
+            if (dev != null) {
+                views.setTextViewText(R.id.w_dev_title, "dev · " + dev.title);
+                views.setTextViewText(R.id.w_dev_when,
+                        Format.when(dev.start, dev.dateOnly) + " · " + Format.until(now, dev.start));
+            } else {
+                views.setTextViewText(R.id.w_dev_title, "dev · no upcoming event");
+                views.setTextViewText(R.id.w_dev_when, "");
+            }
+            if (film != null) {
+                views.setTextViewText(R.id.w_film_title, "film · " + film.title);
+                views.setTextViewText(R.id.w_film_when,
+                        Format.when(film.start, film.dateOnly) + " · " + Format.until(now, film.start));
+            } else {
+                views.setTextViewText(R.id.w_film_title, "film · no upcoming date");
+                views.setTextViewText(R.id.w_film_when, "");
+            }
+        }
+        Intent open = new Intent(ctx, MainActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(ctx, 0, open,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.widget_root, pi);
+        mgr.updateAppWidget(id, views);
+    }
+
+    private static String shortName(String title) {
+        if (title == null) return "";
+        return title.length() <= 14 ? title : title.substring(0, 13) + "…";
+    }
+}

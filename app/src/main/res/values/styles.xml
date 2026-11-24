@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="KapanTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">#171A21</item>
+        <item name="android:colorPrimaryDark">#0E0F13</item>
+        <item name="android:colorAccent">#7EE0A3</item>
+        <item name="android:windowBackground">#0E0F13</item>
+        <item name="android:statusBarColor">#0E0F13</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
+</resources>

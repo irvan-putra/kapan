@@ -61,3 +61,21 @@ agpl-3.0. see LICENSE.
 The README was already convention-compliant (English, honest limits, live
 links, no personal data; the all-lowercase style is deliberate and matches the
 site), so the refresh made no README changes.
+
+---
+
+# 2026-11-24 refresh (moviegoers tab + android app)
+
+## About description (before)
+
+developer events in jakarta & jogja, on one page - gathered from public community feeds
+
+## Website field (before)
+
+https://vanipy.com/kapan/ (unchanged)
+
+## README.md (before)
+
+Archived verbatim in the section above ("Old details (pre-2026-11-24
+refresh)"); this refresh rewrote it for the moviegoers tab, the next-event
+countdown and the android app.

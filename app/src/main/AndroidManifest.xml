@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The app shows public event/film listings fetched from vanipy.com.
+         This is the only permission; listings cache on the phone for
+         offline reading and the widget refreshes at most every few hours. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:label="kapan"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/KapanTheme"
+        android:allowBackup="false"
+        android:supportsRtl="true">
+
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".KapanWidget"
+            android:exported="true"
+            android:label="kapan next">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/kapan_widget" />
+        </receiver>
+    </application>
+</manifest>

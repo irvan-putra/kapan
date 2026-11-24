@@ -1,0 +1,137 @@
+name: kapan signed release
+
+# Manual only. patuh source gate first, then builds the release APK, signs it
+# with the kapan key from repository secrets, verifies the signature and
+# package, byte-checks the candidate via patuh, then publishes a GitHub
+# pre-release and verifies it live.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  consistency:
+    # patuh pre-publish source gate: package, version format, label,
+    # permission drift, family icon geometry, badge reads the candidate
+    # version. A failure stops the release before anything builds.
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f1a72e9766d49b3ca7382fa8f3fba08b7fa776fd
+    with:
+      app: kapan
+      published: false
+
+  release:
+    needs: consistency
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+    env:
+      EXPECTED_CERT_SHA256: "08AA7D26D90110FC17C7B4BD985E899C144369E4845BB7791C4D45468EA765F4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x ./gradlew
+      - name: Read version
+        id: v
+        run: |
+          VER=$(sed -n 's/^val appVersionName = "\(.*\)"/\1/p' app/build.gradle.kts)
+          test -n "$VER"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+      - name: Launcher icons match the generator
+        run: |
+          pip install pillow==12.3.0
+          python3 tools/badge_icon.py --check
+      - name: Unit tests
+        run: ./gradlew --no-daemon testDebugUnitTest
+      - name: Build and sign
+        env:
+          KAPAN_KEYSTORE_B64: ${{ secrets.KAPAN_KEYSTORE_B64 }}
+          KAPAN_STORE_PASSWORD: ${{ secrets.KAPAN_STORE_PASSWORD }}
+          KAPAN_KEY_ALIAS: ${{ secrets.KAPAN_KEY_ALIAS }}
+          KAPAN_KEY_PASSWORD: ${{ secrets.KAPAN_KEY_PASSWORD }}
+        run: |
+          echo "$KAPAN_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/kapan.jks"
+          export KAPAN_KEYSTORE_FILE="$RUNNER_TEMP/kapan.jks"
+          ./gradlew --no-daemon assembleRelease
+          rm -f "$RUNNER_TEMP/kapan.jks"
+      - name: Verify signature, package and permissions
+        shell: bash
+        run: |
+          set -euo pipefail
+          VER="${{ steps.v.outputs.version }}"
+          APK="app/build/outputs/apk/release/kapan-v${VER}-release.apk"
+          test -f "$APK"
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          "$BT/apksigner" verify --verbose --print-certs "$APK" | tee /tmp/cert.txt
+          GOT=$(grep -m1 'certificate SHA-256 digest' /tmp/cert.txt | awk '{print toupper($NF)}' | tr -d ':')
+          WANT=$(echo "$EXPECTED_CERT_SHA256" | tr -d ':' | tr 'a-f' 'A-F')
+          echo "cert digest extracted: [$GOT]"
+          test "$GOT" = "$WANT"
+          echo "cert pin matches"
+          "$BT/aapt" dump badging "$APK" | head -3
+          "$BT/aapt" dump badging "$APK" | grep -F "package: name='com.vanipy.kapan'"
+          "$BT/aapt" dump badging "$APK" | grep -F "versionName='${VER}'"
+          if "$BT/apksigner" verify --print-certs "$APK" | grep -q 'DEBUG'; then exit 1; fi
+          ci/check_permissions.sh "$BT/aapt" "$APK"
+          cp "$APK" "kapan-v${VER}.apk"
+      - name: Upload candidate APK for the byte check
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-apk
+          path: kapan-v${{ steps.v.outputs.version }}.apk
+          retention-days: 1
+
+  candidate-bytes:
+    # patuh checks the built APK's actual bytes (packaged icon badge) before
+    # anything is published. This is the preventive boundary.
+    needs: release
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f1a72e9766d49b3ca7382fa8f3fba08b7fa776fd
+    with:
+      app: kapan
+      published: false
+      candidate_apk_artifact: candidate-apk
+
+  publish:
+    # release must be a direct need for needs.release.outputs.version to
+    # resolve; the needs context covers direct dependencies only
+    needs: [candidate-bytes, release]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      EXPECTED_CERT_SHA256: "08AA7D26D90110FC17C7B4BD985E899C144369E4845BB7791C4D45468EA765F4"
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: candidate-apk, path: dist }
+      - name: Publish pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # no checkout in this job: gh needs explicit repository context
+          GH_REPO: ${{ github.repository }}
+        run: |
+          VER="${{ needs.release.outputs.version }}"
+          cp "dist/kapan-v${VER}.apk" .
+          cat > notes.md <<NOTES
+          kapan ${VER}: developer events and film/festival dates in jakarta & jogja, in one app. Two audience tabs (developers, moviegoers) over the public listings on vanipy.com/kapan, cached on the phone for offline reading. The home-screen widget shows the next event and the next film date - a small circular countdown at 1x1, both audiences at larger sizes; it redraws from the cache on the system tick and fetches only when the cache is over three hours old.
+
+          One permission (INTERNET) for the listing fetches. No account, no tracking, no background services.
+
+          Signed with the kapan key (certificate SHA-256 ${EXPECTED_CERT_SHA256}). The APK's SHA-256 is the digest on the release asset.
+          NOTES
+          gh release create "v${VER}" "kapan-v${VER}.apk" \
+            --title "kapan ${VER}" --notes-file notes.md --prerelease --target "${GITHUB_SHA}"
+
+  verify:
+    # post-publish: verifies the live release (tag, APK name, checksum,
+    # gallery card, downloaded sha256, packaged icon). Detects, cannot undo.
+    # The kaji gallery card is updated by the release owner right after
+    # publish; re-run this job once the card matches.
+    needs: publish
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f1a72e9766d49b3ca7382fa8f3fba08b7fa776fd
+    with:
+      app: kapan
+      published: true
