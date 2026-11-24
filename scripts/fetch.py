@@ -648,7 +648,7 @@ def main():
             feed, f"luma-cal-{cal_id}", label, f"https://lu.ma/calendar/{cal_id}",
             source_log, prev_events,
             dev_filter=cal_filter, cities=cfg["cities"]))
-    # 3. Meetup group feeds (groups are hand-picked dev groups; city from venue text)
+    # 3. Meetup group feeds (groups are a chosen list of dev groups; city from venue text)
     for g in cfg["meetup_groups"]:
         slug = g["slug"]
         feed = f"https://www.meetup.com/{slug}/events/ical/"
