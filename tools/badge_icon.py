@@ -126,8 +126,9 @@ def kapan_art():
     x0, y0, x1, y1 = cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2
     # calendar card
     d.rounded_rectangle([x0, y0, x1, y1], radius=S * .03, fill=KAPAN_CARD)
-    # header band with two binding rings
-    band = y0 + h * .24
+    # header band with two binding rings (tall enough for the family's
+    # full-color rule: >=5% of opaque pixels colorful)
+    band = y0 + h * .34
     d.rounded_rectangle([x0, y0, x1, band], radius=S * .03, fill=KAPAN_LINE)
     d.rectangle([x0, band - h * .06, x1, band], fill=KAPAN_LINE)
     for rx in (cx - w * .25, cx + w * .25):
@@ -135,15 +136,17 @@ def kapan_art():
                             radius=S * .012, fill=KAPAN_CARD)
     # day grid: 3 x 4 dots punched in ink, one marked in film blue
     cols, rows = 4, 3
-    gx0, gy0 = x0 + w * .14, band + h * .14
-    gdx, gdy = w * .24, h * .20
+    gx0, gy0 = x0 + w * .14, band + h * .10
+    gdx, gdy = w * .24, h * .17
     r = S * .026
     mark = (2, 1)
+    mark2 = (0, 2)
     for row in range(rows):
         for col in range(cols):
             px, py = gx0 + col * gdx, gy0 + row * gdy
-            fill = KAPAN_FILM if (col, row) == mark else KAPAN_BG
-            d.ellipse([px - r, py - r, px + r, py + r], fill=fill)
+            rr = r * 1.5 if (col, row) == mark else r
+            fill = KAPAN_FILM if (col, row) == mark else (KAPAN_LINE if (col, row) == mark2 else KAPAN_BG)
+            d.ellipse([px - rr, py - rr, px + rr, py + rr], fill=fill)
     # clapperboard leaning on the bottom-right corner
     bx, by = x1 - S * .01, y1 - S * .10
     bw, bh = S * .17, S * .13
