@@ -165,7 +165,7 @@ public class MainActivity extends Activity {
         if (items.isEmpty()) {
             TextView empty = Ui.text(this, 14, Ui.DIM, Typeface.NORMAL);
             empty.setText(audience.equals(KapanData.AUD_MOVIEGOERS)
-                    ? "nothing tracked here yet - the moviegoers list is hand-tracked from public source pages."
+                    ? "nothing tracked here yet - the moviegoers list is hand-tracked from public source pages, dates checked by instinct (an ai assistant)."
                     : "no upcoming events in the checked sources right now.");
             Ui.pad(empty, this, 8, 24, 8, 8);
             content.addView(empty);
