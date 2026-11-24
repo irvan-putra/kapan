@@ -27,21 +27,21 @@ public class FormatTest {
     }
 
     @Test
-    @org.junit.Test
     public void untilShortDaysAndHours() {
         assertEquals("2d 10h", Format.untilShort(NOW, NOW + (2L * 24 + 10) * 3_600_000L + 5 * 60_000L));
     }
 
-    @org.junit.Test
+    @Test
     public void untilShortHoursOnlyUnderADay() {
         assertEquals("20h", Format.untilShort(NOW, NOW + 20L * 3_600_000L + 11 * 60_000L));
     }
 
-    @org.junit.Test
+    @Test
     public void untilShortMinutesUnderAnHour() {
         assertEquals("45m", Format.untilShort(NOW, NOW + 45L * 60_000L));
     }
 
+    @Test
     public void untilPastIsNow() {
         assertEquals("now", Format.until(NOW, NOW - 60_000L));
     }
