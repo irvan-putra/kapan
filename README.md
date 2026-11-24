@@ -29,7 +29,7 @@ moviegoer entries are tracked in `sources.json`: cinema chains (xxi, cgv, cinepo
 
 ## android app
 
-`app/` builds `com.vanipy.kapan`: the same two tabs over the public listings, cached on the phone for offline reading, plus a personal countdown panel (published care picks + on-device "i'm going" marks, with a "tell instinct" share to add more) and a resizable home-screen widget (1x1 circular countdown, larger sizes show your next event and film). one permission (INTERNET). releases are signed with the kapan key (secrets in this repo's actions secrets; keystore backup in the private cadang repo per the family rule) and gated by patuh.
+`app/` builds `com.vanipy.kapan`: the same two tabs over the public listings, cached on the phone for offline reading, plus a personal countdown panel (published care picks + on-device "i'm going" marks, with a "tell instinct" share to add more) and a resizable home-screen widget (1x1 circular countdown, larger sizes list all your picks (up to five), each with a clock-style countdown; the OS redraws a widget about every 30 minutes and on app opens, so widget countdowns restate at each redraw instead of ticking every second). one permission (INTERNET). releases are signed with the kapan key (secrets in this repo's actions secrets; keystore backup in the private cadang repo per the family rule) and gated by patuh.
 
 ## honest limits
 

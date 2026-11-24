@@ -15,8 +15,11 @@ import android.widget.RemoteViews;
  * date when nothing is picked. Redraws from the on-phone cache on the
  * system's 30-minute tick and fetches over the network only when the cache
  * is older than three hours, so the widget costs no polling worth mentioning.
- * At 1x1 it is a small circular countdown (one number); larger sizes list
- * both rows.
+ * At 1x1 it is a small circular countdown (one number); larger sizes list every pick
+ * (up to five) with a clock-style countdown.
+ * Honest limit: the OS only lets a widget redraw on its ~30-minute tick (plus
+ * app opens and refreshes), so the countdowns cannot tick every second like
+ * the in-app panel; they are restated at each redraw.
  */
 public class KapanWidget extends AppWidgetProvider {
 
@@ -84,27 +87,34 @@ public class KapanWidget extends AppWidgetProvider {
             }
         } else {
             views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget);
-            KapanData.Item dev = KapanData.nextCare(ctx, "event", now);
-            boolean devCare = dev != null;
-            if (dev == null && !hasCare) dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
-            KapanData.Item film = KapanData.nextCare(ctx, "film", now);
-            boolean filmCare = film != null;
-            if (film == null && !hasCare) film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
-            if (dev != null) {
-                views.setTextViewText(R.id.w_dev_title, (devCare ? "yours · " : "dev · ") + dev.title);
-                views.setTextViewText(R.id.w_dev_when,
-                        Format.when(dev.start, dev.dateOnly) + " · " + Format.until(now, dev.start));
+            views.removeAllViews(R.id.w_rows);
+            java.util.List<KapanData.Item> care = KapanData.careItems(ctx, now);
+            if (!care.isEmpty()) {
+                // every pick gets a row (up to 5), each with a clock-style countdown
+                int n = Math.min(care.size(), 5);
+                for (int i = 0; i < n; i++) {
+                    KapanData.Item it = care.get(i);
+                    addRow(ctx, views, "yours · " + it.title,
+                            Format.when(it.start, it.dateOnly) + " · " + Format.clockUntil(now, it.start),
+                            "film".equals(it.kind) ? 0xFF7EC3E0 : 0xFF7EE0A3);
+                }
             } else {
-                views.setTextViewText(R.id.w_dev_title, hasCare ? "yours · no event pick ahead" : "dev · no upcoming event");
-                views.setTextViewText(R.id.w_dev_when, "");
-            }
-            if (film != null) {
-                views.setTextViewText(R.id.w_film_title, (filmCare ? "yours · " : "film · ") + film.title);
-                views.setTextViewText(R.id.w_film_when,
-                        Format.when(film.start, film.dateOnly) + " · " + Format.until(now, film.start));
-            } else {
-                views.setTextViewText(R.id.w_film_title, hasCare ? "yours · no film pick ahead" : "film · no upcoming date");
-                views.setTextViewText(R.id.w_film_when, "");
+                KapanData.Item dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
+                KapanData.Item film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
+                if (dev != null) {
+                    addRow(ctx, views, "dev · " + dev.title,
+                            Format.when(dev.start, dev.dateOnly) + " · " + Format.until(now, dev.start),
+                            0xFF7EE0A3);
+                } else {
+                    addRow(ctx, views, "dev · no upcoming event", "", 0xFF7EE0A3);
+                }
+                if (film != null) {
+                    addRow(ctx, views, "film · " + film.title,
+                            Format.when(film.start, film.dateOnly) + " · " + Format.until(now, film.start),
+                            0xFF7EC3E0);
+                } else {
+                    addRow(ctx, views, "film · no upcoming date", "", 0xFF7EC3E0);
+                }
             }
         }
         Intent open = new Intent(ctx, MainActivity.class);
@@ -112,6 +122,14 @@ public class KapanWidget extends AppWidgetProvider {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.widget_root, pi);
         mgr.updateAppWidget(id, views);
+    }
+
+    private static void addRow(Context ctx, RemoteViews views, String title, String when, int whenColor) {
+        RemoteViews row = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget_row);
+        row.setTextViewText(R.id.w_row_title, title);
+        row.setTextViewText(R.id.w_row_when, when);
+        row.setTextColor(R.id.w_row_when, whenColor);
+        views.addView(R.id.w_rows, row);
     }
 
     private static String shortName(String title) {
