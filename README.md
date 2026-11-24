@@ -13,14 +13,14 @@ android app (APK + home-screen widget): [latest release](https://github.com/irva
 - a github actions job runs monthly (and on demand); github may delay scheduled runs, so events can be up to a month stale unless refreshed manually
 - `scripts/fetch.py` (python, standard library only) reads `sources.json`, fetches each source, and rewrites `site/events.json`, `site/films.json`, `site/care.json`, `site/events.ics` and the static pages
 - github pages serves `site/` - fully static, no server, no keys, no accounts
-- hand-picked countdowns (hosted/going events from `care.events`, films flagged `care`) tick above the list; the next event/film countdown sits above the list too; the tab choice sticks (url hash + saved preference)
+- selected countdowns (hosted/going events from `care.events`, films flagged `care`) tick above the list; the next event/film countdown sits above the list too; the tab choice sticks (url hash + saved preference)
 
 ## sources
 
 developer events come from public, keyless feeds:
 
 - **luma**: the jakarta city discover page (https://lu.ma/jakarta) plus the public ical feed of every calendar that appears there. luma has no jogja city page, so jogja coverage comes from other sources.
-- **meetup**: each group's public ical feed (`https://www.meetup.com/<group>/events/ical/`), for a hand-picked list of jakarta and jogja developer groups in `sources.json`.
+- **meetup**: each group's public ical feed (`https://www.meetup.com/<group>/events/ical/`), for a chosen list of jakarta and jogja developer groups in `sources.json`.
 - **gdg**: chapter pages on gdg.community.dev.
 
 an event is only listed when its venue or title shows jakarta or jogja, or when it is online. developer relevance is checked against the keyword list in `sources.json`.

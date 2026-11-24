@@ -63,7 +63,7 @@ h1{font-size:1.15rem;display:inline}
 <div class="chips aud" id="audchips"></div>
 <div class="chips filters" id="chips"></div>
 <section id="care" style="display:none">
-<h2 class="day">hand-picked countdowns</h2>
+<h2 class="day">selected countdowns</h2>
 <div id="carelist"></div>
 </section>
 <section id="next">
@@ -253,7 +253,7 @@ let careTimer = null;
 render();
 renderCare();
 function renderCare(){
-  // hand-picked countdowns: hosted/going events and care films, all ticking
+  // selected countdowns: hosted/going events and care films, all ticking
   if (careTimer) { clearInterval(careTimer); careTimer = null; }
   const sec = document.getElementById('care');
   const now = Date.now();
