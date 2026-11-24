@@ -98,7 +98,7 @@ const AUD_KEYS = ['developers','moviegoers'];
 const audLabel = k => (AUDS[k] && AUDS[k].label) || k;
 const SUBS = {
   developers: 'developer events in jakarta & jogja, gathered from public community pages.<br>best effort, not exhaustive. every event links back to its organizer page.',
-  moviegoers: 'big releases, anime and game adaptations first; festivals and regular screenings in their own section below.<br>hand-tracked from public source pages, dates checked by instinct (an ai assistant) - each entry links the page its date came from; entries without a confirmed date are labeled.'
+  moviegoers: 'big releases, anime and game adaptations first; festivals and regular screenings in their own section below.<br>tracked from public source pages, dates checked by instinct (an ai assistant) - each entry links the page its date came from; entries without a confirmed date are labeled.'
 };
 const evs = DATA.events || [];
 let city = 'jogja';
@@ -197,7 +197,7 @@ function renderFilms(){
   chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filmFilter=b.dataset.c;render();});
   const shown = filmFiltered();
   const list = document.getElementById('list');
-  if(!shown.length){ list.innerHTML = '<div class="empty">nothing tracked for this filter right now.<br>the moviegoers list is hand-tracked from the source pages below, dates checked by instinct (an ai assistant) - films appear as their dates get announced.</div>'; return; }
+  if(!shown.length){ list.innerHTML = '<div class="empty">nothing tracked for this filter right now.<br>the moviegoers list is tracked from the source pages below, dates checked by instinct (an ai assistant) - films appear as their dates get announced.</div>'; return; }
   const isFest = f => f.kind === 'festival' || f.kind === 'series';
   const dated = shown.filter(f=>!isFest(f) && f.start).sort((a,b)=>new Date(a.start)-new Date(b.start));
   const undated = shown.filter(f=>!isFest(f) && !f.start);
@@ -246,7 +246,7 @@ document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
   const fresh = s.last_success_at ? new Date(s.last_success_at) : null;
   return `<p class="src">${s.ok?'✓':'✗'} <a href="${s.page_url}" target="_blank" rel="noopener">${s.name}</a> · ${state}${fresh?` · last ok ${fmtDay.format(fresh)}`:''}</p>`;
 }).join('');
-document.getElementById('filmhonesty').innerHTML = 'moviegoers entries are hand-tracked: cinema sites block automated fetches, so each date above is checked by instinct (an ai assistant) on the linked source page (the checked day is in the data). entries labeled date unconfirmed have no announced date yet.';
+document.getElementById('filmhonesty').innerHTML = 'moviegoers entries are tracked by instinct (an ai assistant): cinema sites block automated fetches, so each date above is checked by instinct (an ai assistant) on the linked source page (the checked day is in the data). entries labeled date unconfirmed have no announced date yet.';
 // countdown to the soonest upcoming item in the current audience and filter
 let countdownTimer = null;
 let careTimer = null;

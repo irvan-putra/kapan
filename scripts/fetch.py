@@ -469,7 +469,7 @@ def parse_day(s):
 
 
 def load_films(cfg, prev_films):
-    """Hand-tracked films/festivals from sources.json.
+    """Films/festivals from sources.json.
 
     Cinema chain sites block automated fetches, so entries are curated: each
     names the public page its date came from and when it was checked. Entries

@@ -25,7 +25,7 @@ developer events come from public, keyless feeds:
 
 an event is only listed when its venue or title shows jakarta or jogja, or when it is online. developer relevance is checked against the keyword list in `sources.json`.
 
-moviegoer entries are hand-tracked in `sources.json`: cinema chains (xxi, cgv, cinepolis) block automated fetches, so each film/festival entry names the public page its date came from and when it was last checked (checks are done by instinct, an ai assistant - not a person). entries without a confirmed date stay listed, labeled **date unconfirmed**.
+moviegoer entries are tracked in `sources.json`: cinema chains (xxi, cgv, cinepolis) block automated fetches, so each film/festival entry names the public page its date came from and when it was last checked (checks are done by instinct, an ai assistant, not a person). entries without a confirmed date stay listed, labeled **date unconfirmed**.
 
 ## android app
 
