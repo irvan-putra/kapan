@@ -59,6 +59,19 @@ public final class Format {
         return d > 0 ? d + "d " + clock : clock;
     }
 
+    /** Widget countdown the owner asked for: "2d 10h", under a day "20h", under an hour "45m". */
+    public static String untilShort(long nowMillis, long targetMillis) {
+        long ms = targetMillis - nowMillis;
+        if (ms <= 0) return "now";
+        long mins = (ms + 30_000L) / 60_000L;
+        if (mins < 1) mins = 1;
+        long days = mins / (24 * 60);
+        long hours = (mins / 60) % 24;
+        if (days > 0) return days + "d " + hours + "h";
+        if (mins >= 60) return (mins / 60) + "h";
+        return mins + "m";
+    }
+
     /** One number for the 1x1 widget: hours when under two days, else days. */
     public static String untilNumber(long nowMillis, long targetMillis) {
         long ms = Math.max(0L, targetMillis - nowMillis);

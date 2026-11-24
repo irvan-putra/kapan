@@ -95,7 +95,7 @@ public class KapanWidget extends AppWidgetProvider {
                 for (int i = 0; i < n; i++) {
                     KapanData.Item it = care.get(i);
                     addRow(ctx, views, "yours · " + it.title,
-                            Format.when(it.start, it.dateOnly) + " · " + Format.clockUntil(now, it.start),
+                            Format.when(it.start, it.dateOnly) + " · " + Format.untilShort(now, it.start),
                             "film".equals(it.kind) ? 0xFF7EC3E0 : 0xFF7EE0A3);
                 }
             } else {
