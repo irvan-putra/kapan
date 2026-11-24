@@ -44,6 +44,7 @@ public final class KapanData {
         public String where = "";
         public String url = "";
         public String tags = "";     // preformatted "luma · online" style
+        public String kind = "";     // film kind: cinema / streaming / festival / series
         public String note = "";
     }
 
@@ -171,6 +172,8 @@ public final class KapanData {
             List<String> tags = new ArrayList<>();
             if (online) tags.add("online");
             if (e.optBoolean("recurring")) tags.add("repeats");
+            String org = e.optString("organizer");
+            if (!org.isEmpty() && !"null".equals(org)) tags.add(org);
             String src = e.optString("source");
             if (!src.isEmpty()) tags.add(src);
             it.tags = String.join(" · ", tags);
@@ -189,6 +192,7 @@ public final class KapanData {
             it.start = parseIso(f.optString("start"));
             it.dateOnly = true;
             String kind = f.optString("kind");
+            it.kind = kind;
             JSONArray cities = f.optJSONArray("cities");
             List<String> cs = new ArrayList<>();
             if (cities != null) for (int j = 0; j < cities.length(); j++) cs.add(cities.getString(j));

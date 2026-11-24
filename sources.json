@@ -1,207 +1,297 @@
 {
-  "cities": {
-    "jakarta": {
-      "label": "jakarta",
-      "region_terms": [
-        "jakarta"
-      ],
-      "luma_city_slug": "jakarta"
-    },
-    "jogja": {
-      "label": "jogja",
-      "region_terms": [
-        "yogyakarta",
-        "jogja",
-        "sleman",
-        "bantul"
-      ],
-      "luma_city_slug": null
-    }
+ "cities": {
+  "jakarta": {
+   "label": "jakarta",
+   "region_terms": [
+    "jakarta"
+   ],
+   "luma_city_slug": "jakarta"
   },
-  "dev_keywords": [
-    "developer",
-    "develop",
-    "devops",
-    "programming",
-    "programmer",
-    "coding",
-    "code",
-    "software",
-    "engineer",
-    "web dev",
-    "javascript",
-    "typescript",
-    "python",
-    "golang",
-    "rust",
-    "java ",
-    "kotlin",
-    "flutter",
-    "react",
-    "node",
-    "aws",
-    "cloud",
-    "data",
-    "machine learning",
-    " ai ",
-    "artificial intelligence",
-    "llm",
-    "hackathon",
-    "tech",
-    "startup",
-    "open source",
-    "linux",
-    "cyber",
-    "security",
-    "blockchain",
-    "web3",
-    "gdg",
-    "owasp",
-    "api",
-    "frontend",
-    "backend",
-    "fullstack",
-    "ui/ux",
-    "devsecops",
-    "kubernetes",
-    "docker",
-    "database",
-    "sql",
-    "no-code",
-    "no code",
-    "git"
-  ],
-  "luma_calendars": [],
-  "meetup_groups": [
-    {
-      "slug": "aws-ug-jakarta",
-      "city": "jakarta"
-    },
-    {
-      "slug": "owasp-jakarta-chapter",
-      "city": "jakarta"
-    },
-    {
-      "slug": "gdg-jakarta",
-      "city": "jakarta"
-    },
-    {
-      "slug": "flutter-jakarta",
-      "city": "jakarta"
-    },
-    {
-      "slug": "jakarta-node-js-meetup",
-      "city": "jakarta"
-    },
-    {
-      "slug": "jakartas-linux-open-source-software-meetup-group",
-      "city": "jakarta"
-    },
-    {
-      "slug": "python-id",
-      "city": "jakarta"
-    },
-    {
-      "slug": "gdg-jogjakarta",
-      "city": "jogja"
-    },
-    {
-      "slug": "aws-user-group-jogja",
-      "city": "jogja"
-    },
-    {
-      "slug": "aws-sbg-at-university-of-amikom-yogyakarta",
-      "city": "jogja"
-    },
-    {
-      "slug": "yogyakarta-wordpress-meetup",
-      "city": "jogja"
-    },
-    {
-      "slug": "stacks-indonesia",
-      "city": "jogja"
-    }
-  ],
-  "gdg_chapters": [
-    {
-      "slug": "gdg-jakarta",
-      "city": "jakarta"
-    },
-    {
-      "slug": "gdg-jogjakarta",
-      "city": "jogja"
-    }
-  ],
-  "audiences": {
-    "developers": {
-      "label": "developers"
-    },
-    "moviegoers": {
-      "label": "moviegoers"
-    }
+  "jogja": {
+   "label": "jogja",
+   "region_terms": [
+    "yogyakarta",
+    "jogja",
+    "sleman",
+    "bantul"
+   ],
+   "luma_city_slug": null
+  }
+ },
+ "dev_keywords": [
+  "developer",
+  "develop",
+  "devops",
+  "programming",
+  "programmer",
+  "coding",
+  "code",
+  "software",
+  "engineer",
+  "web dev",
+  "javascript",
+  "typescript",
+  "python",
+  "golang",
+  "rust",
+  "java ",
+  "kotlin",
+  "flutter",
+  "react",
+  "node",
+  "aws",
+  "cloud",
+  "data",
+  "machine learning",
+  " ai ",
+  "artificial intelligence",
+  "llm",
+  "hackathon",
+  "tech",
+  "startup",
+  "open source",
+  "linux",
+  "cyber",
+  "security",
+  "blockchain",
+  "web3",
+  "gdg",
+  "owasp",
+  "api",
+  "frontend",
+  "backend",
+  "fullstack",
+  "ui/ux",
+  "devsecops",
+  "kubernetes",
+  "docker",
+  "database",
+  "sql",
+  "no-code",
+  "no code",
+  "git"
+ ],
+ "luma_calendars": [
+  {
+   "id": "cal-yrYsEKDQ91hPMWy",
+   "name": "Build Club",
+   "all": true
+  }
+ ],
+ "meetup_groups": [
+  {
+   "slug": "aws-ug-jakarta",
+   "city": "jakarta"
   },
-  "films": [
-    {
-      "title": "Festival Sinema Prancis 2026",
-      "kind": "festival",
-      "cities": [
-        "jakarta",
-        "jogja"
-      ],
-      "start": "2026-11-19",
-      "end": "2026-12-01",
-      "url": "https://www.ifi-id.com/festival-sinema-prancis-2026/",
-      "source": "institut français d'indonésie",
-      "verified": true,
-      "checked": "2026-11-24",
-      "note": "28th edition: 20 french films in 19 cities incl. jakarta & yogyakarta, at xxi, ifi and partner venues"
-    },
-    {
-      "title": "Hexed",
-      "kind": "cinema",
-      "cities": [],
-      "start": "2026-11-27",
-      "url": "https://m.21cineplex.com/movies/26HEXD",
-      "source": "cinema xxi",
-      "verified": true,
-      "checked": "2026-11-24",
-      "note": "walt disney animation studios; indonesian theatrical release 27 nov per cinema xxi. run length varies by cinema"
-    },
-    {
-      "title": "Jogja-NETPAC Asian Film Festival 2026",
-      "kind": "festival",
-      "cities": [
-        "jogja"
-      ],
-      "start": "2026-11-28",
-      "end": "2026-12-05",
-      "url": "https://jaff-filmfest.org/schedule/",
-      "source": "jaff official",
-      "verified": true,
-      "checked": "2026-11-24",
-      "note": "21st edition in yogyakarta; five studios, program pdf on the site"
-    },
-    {
-      "title": "Hexed on Disney+",
-      "kind": "streaming",
-      "cities": [],
-      "url": "https://www.disneyplus.com/explore/articles/hexed-disney-movie",
-      "source": "disney+",
-      "verified": false,
-      "checked": "2026-11-24",
-      "note": "disney says it comes to disney+ after the theatrical run; no date announced"
-    },
-    {
-      "title": "Kineforum monthly screenings",
-      "kind": "series",
-      "cities": [
-        "jakarta"
-      ],
-      "url": "https://www.kineforum.org/",
-      "source": "kineforum dkj",
-      "verified": true,
-      "checked": "2026-11-24",
-      "note": "curated screenings at taman ismail marzuki; the month's titles go up on the site"
-    }
-  ]
+  {
+   "slug": "owasp-jakarta-chapter",
+   "city": "jakarta"
+  },
+  {
+   "slug": "gdg-jakarta",
+   "city": "jakarta"
+  },
+  {
+   "slug": "flutter-jakarta",
+   "city": "jakarta"
+  },
+  {
+   "slug": "jakarta-node-js-meetup",
+   "city": "jakarta"
+  },
+  {
+   "slug": "jakartas-linux-open-source-software-meetup-group",
+   "city": "jakarta"
+  },
+  {
+   "slug": "python-id",
+   "city": "jakarta"
+  },
+  {
+   "slug": "gdg-jogjakarta",
+   "city": "jogja"
+  },
+  {
+   "slug": "aws-user-group-jogja",
+   "city": "jogja"
+  },
+  {
+   "slug": "aws-sbg-at-university-of-amikom-yogyakarta",
+   "city": "jogja"
+  },
+  {
+   "slug": "yogyakarta-wordpress-meetup",
+   "city": "jogja"
+  },
+  {
+   "slug": "stacks-indonesia",
+   "city": "jogja"
+  }
+ ],
+ "gdg_chapters": [
+  {
+   "slug": "gdg-jakarta",
+   "city": "jakarta"
+  },
+  {
+   "slug": "gdg-jogjakarta",
+   "city": "jogja"
+  }
+ ],
+ "audiences": {
+  "developers": {
+   "label": "developers"
+  },
+  "moviegoers": {
+   "label": "moviegoers"
+  }
+ },
+ "films": [
+  {
+   "title": "Festival Sinema Prancis 2026",
+   "kind": "festival",
+   "cities": [
+    "jakarta",
+    "jogja"
+   ],
+   "start": "2026-11-19",
+   "end": "2026-12-01",
+   "url": "https://www.ifi-id.com/festival-sinema-prancis-2026/",
+   "source": "institut français d'indonésie",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "28th edition: 20 french films in 19 cities incl. jakarta & yogyakarta, at xxi, ifi and partner venues"
+  },
+  {
+   "title": "Hexed",
+   "kind": "cinema",
+   "cities": [],
+   "start": "2026-11-27",
+   "url": "https://m.21cineplex.com/movies/26HEXD",
+   "source": "cinema xxi",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "walt disney animation studios; indonesian theatrical release 27 nov per cinema xxi. run length varies by cinema"
+  },
+  {
+   "title": "Jogja-NETPAC Asian Film Festival 2026",
+   "kind": "festival",
+   "cities": [
+    "jogja"
+   ],
+   "start": "2026-11-28",
+   "end": "2026-12-05",
+   "url": "https://jaff-filmfest.org/schedule/",
+   "source": "jaff official",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "21st edition in yogyakarta; five studios, program pdf on the site"
+  },
+  {
+   "title": "Hexed on Disney+",
+   "kind": "streaming",
+   "cities": [],
+   "url": "https://www.disneyplus.com/explore/articles/hexed-disney-movie",
+   "source": "disney+",
+   "verified": false,
+   "checked": "2026-11-24",
+   "note": "disney says it comes to disney+ after the theatrical run; no date announced"
+  },
+  {
+   "title": "Kineforum monthly screenings",
+   "kind": "series",
+   "cities": [
+    "jakarta"
+   ],
+   "url": "https://www.kineforum.org/",
+   "source": "kineforum dkj",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "curated screenings at taman ismail marzuki; the month's titles go up on the site"
+  },
+  {
+   "title": "Your Name (4K re-release)",
+   "kind": "cinema",
+   "cities": [],
+   "start": "2026-12-02",
+   "url": "https://www.cnnindonesia.com/hiburan/20261102114425-220-1422239/your-name-makoto-shinkai-tayang-lagi-di-bioskop-2-desember",
+   "source": "cbi pictures via cnn indonesia",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "makoto shinkai's kimi no na wa returns for its 10th anniversary in a 4k remaster"
+  },
+  {
+   "title": "Dune: Part Two (IMAX reissue)",
+   "kind": "cinema",
+   "cities": [],
+   "start": "2026-12-09",
+   "url": "https://katadata.co.id/lifestyle/varia/6b041d8c7fe0a/20-film-bioskop-desember-2026-lengkap-jadwal-tayang-dan-sinopsis",
+   "source": "cinema xxi via katadata",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "limited imax reissue ahead of part three, with exclusive part three footage"
+  },
+  {
+   "title": "Avengers: Doomsday",
+   "kind": "cinema",
+   "cities": [],
+   "start": "2026-12-16",
+   "url": "https://www.disney.id/movies/avengers-doomsday",
+   "source": "disney indonesia",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "indonesian release 16 dec, two days ahead of the us (18 dec)"
+  },
+  {
+   "title": "Dune: Part Three",
+   "kind": "cinema",
+   "cities": [],
+   "start": "2026-12-16",
+   "url": "https://www.dunemovie.com/",
+   "source": "warner bros (dunemovie.com)",
+   "verified": true,
+   "checked": "2026-11-24",
+   "note": "international release 16 dec, two days ahead of north america"
+  },
+  {
+   "title": "Mobile Suit Gundam: Hathaway - The Sorcery of Nymph Circe",
+   "kind": "cinema",
+   "cities": [],
+   "url": "https://www.campusnesia.co.id/2026/10/daftar-17-film-bioskop-tayang-desember.html",
+   "source": "campusnesia listing",
+   "verified": false,
+   "checked": "2026-11-24",
+   "note": "second hathaway sequel film; winter/december 2026 window reported, no confirmed indonesian date"
+  },
+  {
+   "title": "Sonic the Hedgehog 4",
+   "kind": "cinema",
+   "cities": [],
+   "url": "https://www.sonicthehedgehogmovie.com/",
+   "source": "official movie site",
+   "verified": false,
+   "checked": "2026-11-24",
+   "note": "us release 19 mar 2027; indonesian date not announced"
+  },
+  {
+   "title": "The Legend of Zelda",
+   "kind": "cinema",
+   "cities": [],
+   "url": "https://www.nintendo.co.jp/corporate/release/en/2026/260908.html",
+   "source": "nintendo",
+   "verified": false,
+   "checked": "2026-11-24",
+   "note": "live-action, worldwide 30 apr 2027 per nintendo; indonesian date not announced"
+  },
+  {
+   "title": "The Angry Birds Movie 3",
+   "kind": "cinema",
+   "cities": [],
+   "url": "https://katadata.co.id/lifestyle/varia/6b041d8c7fe0a/20-film-bioskop-desember-2026-lengkap-jadwal-tayang-dan-sinopsis",
+   "source": "box office mojo via katadata",
+   "verified": false,
+   "checked": "2026-11-24",
+   "note": "us 23 dec 2026; indonesian date listed as 8 jan 2027 by box office mojo, not officially announced"
+  }
+ ]
 }

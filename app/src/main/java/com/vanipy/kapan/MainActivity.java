@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
     private LinearLayout content;
     private TextView status;
     private String audience = KapanData.AUD_DEVELOPERS;
+    private final java.util.Map<String, Button> tabButtons = new java.util.LinkedHashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +72,33 @@ public class MainActivity extends Activity {
 
     private void addTab(LinearLayout tabs, String label, String id) {
         Button b = new Button(this);
-        b.setText(label);
+        b.setText(label.toLowerCase());
+        b.setAllCaps(false);
         b.setOnClickListener(v -> { audience = id; render(); });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         lp.setMargins(Ui.dp(this, 4), 0, Ui.dp(this, 4), 0);
         tabs.addView(b, lp);
+        tabButtons.put(id, b);
+    }
+
+    private void styleTabs() {
+        for (java.util.Map.Entry<String, Button> e : tabButtons.entrySet()) {
+            Button b = e.getValue();
+            boolean on = e.getKey().equals(audience);
+            GradientDrawable bg = new GradientDrawable();
+            bg.setCornerRadius(Ui.dp(this, 20));
+            if (on) {
+                bg.setColor(Ui.ACCENT2);
+                b.setTextColor(0xFF0C0D10);
+                b.setTypeface(Typeface.DEFAULT_BOLD);
+            } else {
+                bg.setColor(Ui.PANEL);
+                bg.setStroke(Ui.dp(this, 1), Ui.LINE);
+                b.setTextColor(Ui.DIM);
+                b.setTypeface(Typeface.DEFAULT);
+            }
+            b.setBackground(bg);
+        }
     }
 
     private void refresh(boolean manual) {
@@ -93,6 +117,7 @@ public class MainActivity extends Activity {
     }
 
     private void render() {
+        styleTabs();
         long fetched = KapanData.lastFetched(this);
         if (fetched == 0 && !KapanData.hasCache(this)) {
             status.setText("no data yet - tap refresh");
@@ -120,14 +145,53 @@ public class MainActivity extends Activity {
             content.addView(empty);
             return;
         }
-        for (KapanData.Item it : items) {
-            content.addView(card(it));
+        if (audience.equals(KapanData.AUD_MOVIEGOERS)) {
+            List<KapanData.Item> dated = new ArrayList<>();
+            List<KapanData.Item> undated = new ArrayList<>();
+            List<KapanData.Item> fests = new ArrayList<>();
+            for (KapanData.Item it : items) {
+                boolean fest = "festival".equals(it.kind) || "series".equals(it.kind);
+                if (fest) fests.add(it);
+                else if (it.start > 0) dated.add(it);
+                else undated.add(it);
+            }
+            addFilmSection(content, "big releases", dated, true);
+            addFilmSection(content, "coming, date unconfirmed", undated, false);
+            addFilmSection(content, "festivals & regular screenings - easy to miss", fests, false);
+        } else {
+            for (KapanData.Item it : items) {
+                content.addView(card(it));
+            }
         }
         TextView foot = Ui.text(this, 12, Ui.DIM, Typeface.NORMAL);
         foot.setText("listings from vanipy.com/kapan (public feeds, best effort). "
                 + "every card opens its own source page.");
         Ui.pad(foot, this, 8, 20, 8, 8);
         content.addView(foot);
+    }
+
+    private void addFilmSection(LinearLayout content, String title, List<KapanData.Item> items,
+                                boolean showDayHeaders) {
+        if (items.isEmpty()) return;
+        TextView h = Ui.text(this, 12, Ui.ACCENT2, Typeface.BOLD);
+        h.setText(title.toUpperCase());
+        h.setLetterSpacing(0.12f);
+        Ui.pad(h, this, 8, 18, 8, 2);
+        content.addView(h);
+        String lastDay = "";
+        for (KapanData.Item it : items) {
+            if (showDayHeaders) {
+                String day = Format.day(it.start);
+                if (!day.equals(lastDay)) {
+                    TextView d = Ui.text(this, 12, Ui.DIM, Typeface.NORMAL);
+                    d.setText(day);
+                    Ui.pad(d, this, 8, 10, 8, 0);
+                    content.addView(d);
+                    lastDay = day;
+                }
+            }
+            content.addView(card(it));
+        }
     }
 
     private View card(KapanData.Item it) {
