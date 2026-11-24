@@ -89,7 +89,8 @@ public class MainActivity extends Activity {
 
         setContentView(root);
         render();
-        if (System.currentTimeMillis() - KapanData.lastFetched(this) > STALE_MS) {
+        if (System.currentTimeMillis() - KapanData.lastFetched(this) > STALE_MS
+                || !KapanData.hasCareCache(this)) {
             refresh(false);
         }
     }

@@ -1,7 +1,7 @@
 {
  "app": "kapan",
  "repo": "irvan-putra/kapan",
- "generated_at": "2026-11-24T05:56:00.897488Z",
+ "generated_at": "2026-11-24T05:59:21.682702Z",
  "timezone": "Asia/Jakarta",
  "window_days": 90,
  "cities": [
@@ -15,10 +15,10 @@
    "name": "luma jakarta city page",
    "page_url": "https://lu.ma/jakarta",
    "feed_url": "https://lu.ma/jakarta",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 2,
-   "last_success_at": "2026-11-24T05:56:00.897488Z",
+   "last_success_at": "2026-11-24T05:59:21.682702Z",
    "calendars_found": 6
   },
   {
@@ -26,190 +26,190 @@
    "name": "The Reader's Trail Activation",
    "page_url": "https://lu.ma/calendar/cal-0mY59kiyIHcP3Cx",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-0mY59kiyIHcP3Cx",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-63iJeJNzGiVDSAC",
    "name": "luma community calendar iVDSAC",
    "page_url": "https://lu.ma/calendar/cal-63iJeJNzGiVDSAC",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-63iJeJNzGiVDSAC",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-H0SGDeMJ0U7BhYg",
    "name": "Komunitas Python Indonesia",
    "page_url": "https://lu.ma/calendar/cal-H0SGDeMJ0U7BhYg",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-H0SGDeMJ0U7BhYg",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-Mp1VFMzLld51zRB",
    "name": "Sip & Scale Jakarta",
    "page_url": "https://lu.ma/calendar/cal-Mp1VFMzLld51zRB",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-Mp1VFMzLld51zRB",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-ltexIzUnSUtV2Ug",
    "name": "luma community calendar UtV2Ug",
    "page_url": "https://lu.ma/calendar/cal-ltexIzUnSUtV2Ug",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-ltexIzUnSUtV2Ug",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-voSSwwLPSpm5LRL",
    "name": "Alibaba Cloud Indonesia",
    "page_url": "https://lu.ma/calendar/cal-voSSwwLPSpm5LRL",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-voSSwwLPSpm5LRL",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "luma-cal-cal-yrYsEKDQ91hPMWy",
    "name": "Build Club",
    "page_url": "https://lu.ma/calendar/cal-yrYsEKDQ91hPMWy",
    "feed_url": "https://api.lu.ma/ics/get?entity=calendar&id=cal-yrYsEKDQ91hPMWy",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 5,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-aws-ug-jakarta",
    "name": "aws ug jakarta",
    "page_url": "https://www.meetup.com/aws-ug-jakarta/",
    "feed_url": "https://www.meetup.com/aws-ug-jakarta/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-owasp-jakarta-chapter",
    "name": "owasp jakarta chapter",
    "page_url": "https://www.meetup.com/owasp-jakarta-chapter/",
    "feed_url": "https://www.meetup.com/owasp-jakarta-chapter/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 1,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-gdg-jakarta",
    "name": "gdg jakarta",
    "page_url": "https://www.meetup.com/gdg-jakarta/",
    "feed_url": "https://www.meetup.com/gdg-jakarta/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-flutter-jakarta",
    "name": "flutter jakarta",
    "page_url": "https://www.meetup.com/flutter-jakarta/",
    "feed_url": "https://www.meetup.com/flutter-jakarta/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-jakarta-node-js-meetup",
    "name": "jakarta node js meetup",
    "page_url": "https://www.meetup.com/jakarta-node-js-meetup/",
    "feed_url": "https://www.meetup.com/jakarta-node-js-meetup/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-jakartas-linux-open-source-software-meetup-group",
    "name": "jakartas linux open source software meetup group",
    "page_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/",
    "feed_url": "https://www.meetup.com/jakartas-linux-open-source-software-meetup-group/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-python-id",
    "name": "python id",
    "page_url": "https://www.meetup.com/python-id/",
    "feed_url": "https://www.meetup.com/python-id/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-gdg-jogjakarta",
    "name": "gdg jogjakarta",
    "page_url": "https://www.meetup.com/gdg-jogjakarta/",
    "feed_url": "https://www.meetup.com/gdg-jogjakarta/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-aws-user-group-jogja",
    "name": "aws user group jogja",
    "page_url": "https://www.meetup.com/aws-user-group-jogja/",
    "feed_url": "https://www.meetup.com/aws-user-group-jogja/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-aws-sbg-at-university-of-amikom-yogyakarta",
    "name": "aws sbg at university of amikom yogyakarta",
    "page_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/",
    "feed_url": "https://www.meetup.com/aws-sbg-at-university-of-amikom-yogyakarta/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-yogyakarta-wordpress-meetup",
    "name": "yogyakarta wordpress meetup",
    "page_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/",
    "feed_url": "https://www.meetup.com/yogyakarta-wordpress-meetup/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "meetup-stacks-indonesia",
    "name": "stacks indonesia",
    "page_url": "https://www.meetup.com/stacks-indonesia/",
    "feed_url": "https://www.meetup.com/stacks-indonesia/events/ical/",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "gdg-gdg-jakarta",
@@ -217,10 +217,10 @@
    "name": "gdg jakarta",
    "page_url": "https://gdg.community.dev/gdg-jakarta/",
    "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/642/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   },
   {
    "id": "gdg-gdg-jogjakarta",
@@ -228,10 +228,10 @@
    "name": "gdg jogjakarta",
    "page_url": "https://gdg.community.dev/gdg-jogjakarta/",
    "feed_url": "https://gdg.community.dev/api/event_slim/for_chapter/577/?page_size=20&status=Live&include_cohosted_events=true&order=start_date&fields=title,start_date,end_date,event_type_title,url,description_short,picture",
-   "fetched_at": "2026-11-24T05:56:00.897488Z",
+   "fetched_at": "2026-11-24T05:59:21.682702Z",
    "ok": true,
    "count": 0,
-   "last_success_at": "2026-11-24T05:56:00.897488Z"
+   "last_success_at": "2026-11-24T05:59:21.682702Z"
   }
  ],
  "events": [

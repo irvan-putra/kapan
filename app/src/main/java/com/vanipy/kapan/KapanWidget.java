@@ -25,7 +25,8 @@ public class KapanWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
         renderAll(ctx, mgr, ids);
-        if (System.currentTimeMillis() - KapanData.lastFetched(ctx) > FETCH_IF_OLDER_MS) {
+        if (System.currentTimeMillis() - KapanData.lastFetched(ctx) > FETCH_IF_OLDER_MS
+                || !KapanData.hasCareCache(ctx)) {
             PendingResult pending = goAsync();
             new Thread(() -> {
                 try {
@@ -66,11 +67,13 @@ public class KapanWidget extends AppWidgetProvider {
         int cols = cells(options, AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
         int rows = cells(options, AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
         long now = System.currentTimeMillis();
+        // when any picks exist the widget shows only them, never generic listings
+        boolean hasCare = !KapanData.careItems(ctx, now).isEmpty();
         RemoteViews views;
         if (cols <= 1 && rows <= 1) {
             views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget_small);
             KapanData.Item next = KapanData.nextCare(ctx, null, now);
-            if (next == null) next = KapanData.nextAny(ctx, now);
+            if (next == null && !hasCare) next = KapanData.nextAny(ctx, now);
             if (next != null) {
                 views.setTextViewText(R.id.w_big, Format.untilNumber(now, next.start));
                 views.setTextViewText(R.id.w_label, Format.untilUnit(now, next.start)
@@ -83,16 +86,16 @@ public class KapanWidget extends AppWidgetProvider {
             views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget);
             KapanData.Item dev = KapanData.nextCare(ctx, "event", now);
             boolean devCare = dev != null;
-            if (dev == null) dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
+            if (dev == null && !hasCare) dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
             KapanData.Item film = KapanData.nextCare(ctx, "film", now);
             boolean filmCare = film != null;
-            if (film == null) film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
+            if (film == null && !hasCare) film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
             if (dev != null) {
                 views.setTextViewText(R.id.w_dev_title, (devCare ? "yours · " : "dev · ") + dev.title);
                 views.setTextViewText(R.id.w_dev_when,
                         Format.when(dev.start, dev.dateOnly) + " · " + Format.until(now, dev.start));
             } else {
-                views.setTextViewText(R.id.w_dev_title, "dev · no upcoming event");
+                views.setTextViewText(R.id.w_dev_title, hasCare ? "yours · no event pick ahead" : "dev · no upcoming event");
                 views.setTextViewText(R.id.w_dev_when, "");
             }
             if (film != null) {
@@ -100,7 +103,7 @@ public class KapanWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.w_film_when,
                         Format.when(film.start, film.dateOnly) + " · " + Format.until(now, film.start));
             } else {
-                views.setTextViewText(R.id.w_film_title, "film · no upcoming date");
+                views.setTextViewText(R.id.w_film_title, hasCare ? "yours · no film pick ahead" : "film · no upcoming date");
                 views.setTextViewText(R.id.w_film_when, "");
             }
         }

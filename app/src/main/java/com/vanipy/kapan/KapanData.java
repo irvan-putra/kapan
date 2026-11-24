@@ -83,6 +83,11 @@ public final class KapanData {
                 || new File(ctx.getFilesDir(), "films.json").exists();
     }
 
+    /** False until the care feed has been downloaded at least once. */
+    public static boolean hasCareCache(Context ctx) {
+        return new File(ctx.getFilesDir(), "care.json").exists();
+    }
+
     /** Next dated item still ahead of now, or null. */
     public static Item next(Context ctx, String audience, long nowMillis) {
         Item best = null;

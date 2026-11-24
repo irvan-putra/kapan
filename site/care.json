@@ -1,8 +1,20 @@
 {
  "app": "kapan",
- "generated_at": "2026-11-24T05:56:00.897488Z",
+ "generated_at": "2026-11-24T05:59:21.682702Z",
  "timezone": "Asia/Jakarta",
  "items": [
+  {
+   "uid": "care-appledeveloperacademyucjakartagraduationshowcase2026-2026-11-25",
+   "title": "Apple Developer Academy @ UC Jakarta Graduation Showcase 2026",
+   "start": "2026-11-25T02:30:00Z",
+   "end": "2026-11-25T05:00:00Z",
+   "kind": "event",
+   "role": "going",
+   "url": "",
+   "where": "Autograph Tower, Thamrin Nine",
+   "poster": null,
+   "date_only": false
+  },
   {
    "uid": "luma-evt-5zWDseFIaZufez0",
    "title": "Build 24/7 AI Team for Your Businesses | Road to SCALECON 2027",

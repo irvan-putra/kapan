@@ -515,6 +515,18 @@ def load_films(cfg, prev_films):
 
 # ---------------- main ----------------
 
+def parse_care_dt(s):
+    """'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM' (WIB) -> datetime, or None."""
+    if not s:
+        return None
+    for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s, fmt).replace(tzinfo=WIB)
+        except ValueError:
+            pass
+    return None
+
+
 def load_care(cfg, final_events, films):
     """Hand-picked countdown list: events the maintainer hosts or is going to
     (care.events in sources.json, public titles/dates/links only), plus films
@@ -538,11 +550,14 @@ def load_care(cfg, final_events, films):
         if ev is None and slug_m and _http_count < MAX_HTTP:
             ev = fetch_luma_page_event(url)
         if ev is None:
-            start = parse_day(c.get("start"))
+            start = parse_care_dt(c.get("start"))
             if not start:
                 continue  # nothing verifiable to count down to
-            ev = {"title": c.get("title") or "", "start": iso(start), "end": None,
-                  "url": url, "venue": None, "online": False, "poster": None, "uid": None}
+            end_cfg = parse_care_dt(c.get("end"))
+            ev = {"title": c.get("title") or "", "start": iso(start),
+                  "end": iso(end_cfg) if end_cfg else None,
+                  "url": url, "venue": c.get("where"), "online": False,
+                  "poster": None, "uid": None}
         if not ev.get("start"):
             continue
         try:
