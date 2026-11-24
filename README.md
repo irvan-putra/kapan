@@ -2,7 +2,7 @@
 
 developer events & film dates in jakarta & jogja, on one page - and one app.
 
-kapan gathers upcoming developer events (meetups, talks, workshops, hackathons) from public community pages, and hand-tracks films, festivals and streaming dates for moviegoers (the easy-to-miss ones especially). two audience tabs on one calendar: **developers** and **moviegoers**. every entry links back to its source page - registration and tickets always happen there, not here.
+kapan gathers upcoming developer events (meetups, talks, workshops, hackathons) from public community pages, and tracks films, festivals and streaming dates for moviegoers (the easy-to-miss ones especially). two audience tabs on one calendar: **developers** and **moviegoers**. every entry links back to its source page - registration and tickets always happen there, not here.
 
 live site: https://vanipy.com/kapan/ (tabs: developers · moviegoers; `#moviegoers` opens the film tab directly)
 combined developer feed: https://vanipy.com/kapan/events.ics (subscribe by url in any calendar app)
@@ -13,7 +13,7 @@ android app (APK + home-screen widget): [latest release](https://github.com/irva
 - a github actions job runs monthly (and on demand); github may delay scheduled runs, so events can be up to a month stale unless refreshed manually
 - `scripts/fetch.py` (python, standard library only) reads `sources.json`, fetches each source, and rewrites `site/events.json`, `site/films.json`, `site/care.json`, `site/events.ics` and the static pages
 - github pages serves `site/` - fully static, no server, no keys, no accounts
-- selected countdowns (hosted/going events from `care.events`, films flagged `care`) tick above the list; the next event/film countdown sits above the list too; the tab choice sticks (url hash + saved preference)
+- your countdowns (picked by instinct, an ai assistant, from what it knows - hosted/going events from `care.events`, films flagged `care` - plus on-device i'm-going stars) tick above the list; the next event/film countdown sits above the list too; the tab choice sticks (url hash + saved preference)
 
 ## sources
 

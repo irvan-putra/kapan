@@ -220,8 +220,11 @@ public class MainActivity extends Activity {
         TextView h = Ui.text(this, 12, Ui.ACCENT2, Typeface.BOLD);
         h.setText("YOUR COUNTDOWNS");
         h.setLetterSpacing(0.12f);
-        Ui.pad(h, this, 0, 0, 0, 6);
         panel.addView(h);
+        TextView sub = Ui.text(this, 11, Ui.DIM, Typeface.NORMAL);
+        sub.setText("picked by instinct from what it knows, plus your stars");
+        Ui.pad(sub, this, 0, 0, 0, 6);
+        panel.addView(sub);
 
         int shown = 0;
         for (KapanData.Item it : care) {

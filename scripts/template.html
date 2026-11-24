@@ -63,7 +63,7 @@ h1{font-size:1.15rem;display:inline}
 <div class="chips aud" id="audchips"></div>
 <div class="chips filters" id="chips"></div>
 <section id="care" style="display:none">
-<h2 class="day">selected countdowns</h2>
+<h2 class="day">your countdowns <span class="dim" style="font-weight:normal">(picked by instinct from what it knows, plus your stars)</span></h2>
 <div id="carelist"></div>
 </section>
 <section id="next">
@@ -253,7 +253,7 @@ let careTimer = null;
 render();
 renderCare();
 function renderCare(){
-  // selected countdowns: hosted/going events and care films, all ticking
+  // your countdowns: picks by Instinct (an AI assistant) from what it knows, plus on-device stars - hosted/going events and care films, all ticking
   if (careTimer) { clearInterval(careTimer); careTimer = null; }
   const sec = document.getElementById('care');
   const now = Date.now();
