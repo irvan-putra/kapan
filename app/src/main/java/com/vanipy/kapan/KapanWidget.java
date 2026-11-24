@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 /**
- * Home-screen widget: the next developer event and the next film date.
- * Redraws from the on-phone cache on the system's 30-minute tick and fetches
- * over the network only when the cache is older than three hours, so the
- * widget costs no polling worth mentioning. At 1x1 it is a small circular
- * countdown (one number); larger sizes list both audiences.
+ * Home-screen widget: your next countdown (hosted/going events, care films,
+ * on-device going marks), falling back to the next developer event and film
+ * date when nothing is picked. Redraws from the on-phone cache on the
+ * system's 30-minute tick and fetches over the network only when the cache
+ * is older than three hours, so the widget costs no polling worth mentioning.
+ * At 1x1 it is a small circular countdown (one number); larger sizes list
+ * both rows.
  */
 public class KapanWidget extends AppWidgetProvider {
 
@@ -67,7 +69,8 @@ public class KapanWidget extends AppWidgetProvider {
         RemoteViews views;
         if (cols <= 1 && rows <= 1) {
             views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget_small);
-            KapanData.Item next = KapanData.nextAny(ctx, now);
+            KapanData.Item next = KapanData.nextCare(ctx, null, now);
+            if (next == null) next = KapanData.nextAny(ctx, now);
             if (next != null) {
                 views.setTextViewText(R.id.w_big, Format.untilNumber(now, next.start));
                 views.setTextViewText(R.id.w_label, Format.untilUnit(now, next.start)
@@ -78,10 +81,14 @@ public class KapanWidget extends AppWidgetProvider {
             }
         } else {
             views = new RemoteViews(ctx.getPackageName(), R.layout.kapan_widget);
-            KapanData.Item dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
-            KapanData.Item film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
+            KapanData.Item dev = KapanData.nextCare(ctx, "event", now);
+            boolean devCare = dev != null;
+            if (dev == null) dev = KapanData.next(ctx, KapanData.AUD_DEVELOPERS, now);
+            KapanData.Item film = KapanData.nextCare(ctx, "film", now);
+            boolean filmCare = film != null;
+            if (film == null) film = KapanData.next(ctx, KapanData.AUD_MOVIEGOERS, now);
             if (dev != null) {
-                views.setTextViewText(R.id.w_dev_title, "dev · " + dev.title);
+                views.setTextViewText(R.id.w_dev_title, (devCare ? "yours · " : "dev · ") + dev.title);
                 views.setTextViewText(R.id.w_dev_when,
                         Format.when(dev.start, dev.dateOnly) + " · " + Format.until(now, dev.start));
             } else {
@@ -89,7 +96,7 @@ public class KapanWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.w_dev_when, "");
             }
             if (film != null) {
-                views.setTextViewText(R.id.w_film_title, "film · " + film.title);
+                views.setTextViewText(R.id.w_film_title, (filmCare ? "yours · " : "film · ") + film.title);
                 views.setTextViewText(R.id.w_film_when,
                         Format.when(film.start, film.dateOnly) + " · " + Format.until(now, film.start));
             } else {

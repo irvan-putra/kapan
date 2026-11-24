@@ -1,0 +1,55 @@
+{
+ "app": "kapan",
+ "generated_at": "2026-11-24T05:45:18.685775Z",
+ "timezone": "Asia/Jakarta",
+ "items": [
+  {
+   "uid": "luma-evt-5zWDseFIaZufez0",
+   "title": "Build 24/7 AI Team for Your Businesses | Road to SCALECON 2027",
+   "start": "2026-11-25T11:30:00Z",
+   "end": "2026-11-25T14:30:00Z",
+   "kind": "event",
+   "role": "hosting",
+   "url": "https://lu.ma/nqv9479h",
+   "where": "Centennial Tower",
+   "poster": "https://images.lumacdn.com/uploads/6g/41d00201-d10e-4191-b8df-0024269efa6e.png",
+   "date_only": false
+  },
+  {
+   "uid": "film-hexed",
+   "title": "Hexed",
+   "start": "2026-11-26T17:00:00Z",
+   "end": "2026-12-16T17:00:00Z",
+   "kind": "film",
+   "role": "watching",
+   "url": "https://m.21cineplex.com/movies/26HEXD",
+   "where": "cinemas across indonesia",
+   "poster": "https://nos.jkt-1.neo.id/media.cinema21.co.id/movie-images/26HEXD.jpg",
+   "date_only": true
+  },
+  {
+   "uid": "luma-evt-yEuyMtWqTgHC1OF",
+   "title": "10 Tahun PyJogja Conference",
+   "start": "2026-12-05T02:00:00Z",
+   "end": "2026-12-05T10:00:00Z",
+   "kind": "event",
+   "role": "going",
+   "url": "https://luma.com/zxru86nc",
+   "where": "Garuda Spark Innovation Hub - Yogyakarta",
+   "poster": "https://images.lumacdn.com/uploads/dm/f9573ed0-619a-4f1a-aa48-9e82ad11aafe.png",
+   "date_only": false
+  },
+  {
+   "uid": "film-avengersdoomsday",
+   "title": "Avengers: Doomsday",
+   "start": "2026-12-15T17:00:00Z",
+   "end": "2027-01-04T17:00:00Z",
+   "kind": "film",
+   "role": "watching",
+   "url": "https://www.disney.id/movies/avengers-doomsday",
+   "where": "cinemas across indonesia",
+   "poster": "https://lumiere-a.akamaihd.net/v1/images/doomsday-teaser_62621027.jpeg?region=0%2C0%2C743%2C1100",
+   "date_only": true
+  }
+ ]
+}

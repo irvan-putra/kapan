@@ -62,6 +62,10 @@ h1{font-size:1.15rem;display:inline}
 <p class="sub cities" style="margin-bottom:.6rem"><a class="brand" href="/__APPNAME__/">all</a> · <a class="brand" href="/__APPNAME__/jakarta/">jakarta</a> · <a class="brand" href="/__APPNAME__/jogja/">jogja</a></p>
 <div class="chips aud" id="audchips"></div>
 <div class="chips filters" id="chips"></div>
+<section id="care" style="display:none">
+<h2 class="day">hand-picked countdowns</h2>
+<div id="carelist"></div>
+</section>
 <section id="next">
 <h2 class="day" id="nexthead">next event</h2>
 <a class="ev" id="nextcard" target="_blank" rel="noopener">
@@ -83,10 +87,12 @@ h1{font-size:1.15rem;display:inline}
 </footer>
 <script id="evdata" type="application/json">__DATAJSON__</script>
 <script id="filmdata" type="application/json">__FILMSJSON__</script>
+<script id="caredata" type="application/json">__CAREJSON__</script>
 <script id="auddata" type="application/json">__AUDIENCESJSON__</script>
 <script>
 const DATA = JSON.parse(document.getElementById('evdata').textContent);
 const FILMS = (JSON.parse(document.getElementById('filmdata').textContent).films) || [];
+const CARE = (JSON.parse(document.getElementById('caredata').textContent).items) || [];
 const AUDS = JSON.parse(document.getElementById('auddata').textContent);
 const AUD_KEYS = ['developers','moviegoers'];
 const audLabel = k => (AUDS[k] && AUDS[k].label) || k;
@@ -243,7 +249,44 @@ document.getElementById('srcs').innerHTML = (DATA.sources||[]).map(s=>{
 document.getElementById('filmhonesty').innerHTML = 'moviegoers entries are hand-tracked: cinema sites block automated fetches, so each date above is checked by a person on the linked source page (the checked day is in the data). entries labeled date unconfirmed have no announced date yet.';
 // countdown to the soonest upcoming item in the current audience and filter
 let countdownTimer = null;
+let careTimer = null;
 render();
+renderCare();
+function renderCare(){
+  // hand-picked countdowns: hosted/going events and care films, all ticking
+  if (careTimer) { clearInterval(careTimer); careTimer = null; }
+  const sec = document.getElementById('care');
+  const now = Date.now();
+  const upcoming = CARE.filter(i=>{
+    if(!i.start) return false;
+    const end = i.end ? new Date(i.end).getTime()
+      : new Date(i.start).getTime() + (i.date_only ? 20*3600000 : 3*3600000);
+    return end > now;
+  });
+  if(!upcoming.length){ sec.style.display='none'; return; }
+  sec.style.display='';
+  const el = document.getElementById('carelist');
+  el.innerHTML = upcoming.slice(0,8).map(i=>{
+    const t = new Date(i.start).getTime();
+    const when = i.date_only ? fmtDay.format(t).toLowerCase()
+      : (fmtDay.format(t)+', '+fmtTime.format(t)+' wib').toLowerCase();
+    const role = i.role==='hosting' ? '<span class="tag on">hosting</span>'
+      : i.kind==='film' ? '<span class="tag">film pick</span>'
+      : '<span class="tag">going</span>';
+    return `<a class="ev" href="${i.url}" target="_blank" rel="noopener"><div class="b"><div class="t">${i.title}</div><div class="m">${when}${i.where?` · ${i.where}`:''}${role}</div></div><span class="tag on cd" data-t="${t}"></span></a>`;
+  }).join('');
+  const pad = n => (n<10?'0':'')+n;
+  const tick = ()=>{
+    el.querySelectorAll('.cd').forEach(s=>{
+      const ms = Math.max(0, (+s.dataset.t) - Date.now());
+      let x = Math.floor(ms/1000);
+      const d = Math.floor(x/86400); x%=86400;
+      const h2 = Math.floor(x/3600), m = Math.floor(x%3600/60), s2 = x%60;
+      s.textContent = (d>0?d+'d ':'')+pad(h2)+':'+pad(m)+':'+pad(s2);
+    });
+  };
+  tick(); careTimer = setInterval(tick, 1000);
+}
 function renderNext(){
   if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
   const sec = document.getElementById('next');

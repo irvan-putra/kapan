@@ -1,6 +1,6 @@
 {
  "app": "kapan",
- "generated_at": "2026-11-24T05:26:17.275825Z",
+ "generated_at": "2026-11-24T05:45:18.685775Z",
  "timezone": "Asia/Jakarta",
  "films": [
   {
@@ -18,6 +18,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "28th edition: 20 french films in 19 cities incl. jakarta & yogyakarta, at xxi, ifi and partner venues",
+   "care": false,
    "uid": "film-festivalsinemaprancis2026",
    "poster": "https://www.ifi-id.com/wp-content/uploads/2026/11/FSP-2026-Web-Banner.jpg"
   },
@@ -33,6 +34,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "walt disney animation studios; indonesian theatrical release 27 nov per cinema xxi. run length varies by cinema",
+   "care": true,
    "uid": "film-hexed",
    "poster": "https://nos.jkt-1.neo.id/media.cinema21.co.id/movie-images/26HEXD.jpg"
   },
@@ -50,6 +52,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "21st edition in yogyakarta; five studios, program pdf on the site",
+   "care": false,
    "uid": "film-jogjanetpacasianfilmfestival2026"
   },
   {
@@ -64,6 +67,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "makoto shinkai's kimi no na wa returns for its 10th anniversary in a 4k remaster",
+   "care": false,
    "uid": "film-yourname4krerelease",
    "poster": "https://akcdn.detik.net.id/visual/2020/07/07/anime-your-name-2_169.png?w=1200"
   },
@@ -79,6 +83,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "limited imax reissue ahead of part three, with exclusive part three footage",
+   "care": false,
    "uid": "film-duneparttwoimaxreissue",
    "poster": "https://cdn1.katadata.co.id/media/images/thumb/2026/11/23/Dune_Part_Three-2026_11_23-17_59_39_a34c48149f2eb1a48cc9200e1e98173e_960x640_thumb.png"
   },
@@ -94,6 +99,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "indonesian release 16 dec, two days ahead of the us (18 dec)",
+   "care": true,
    "uid": "film-avengersdoomsday",
    "poster": "https://lumiere-a.akamaihd.net/v1/images/doomsday-teaser_62621027.jpeg?region=0%2C0%2C743%2C1100"
   },
@@ -109,6 +115,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "international release 16 dec, two days ahead of north america",
+   "care": false,
    "uid": "film-dunepartthree",
    "poster": "https://www.dunemovie.com/images/share.jpg"
   },
@@ -124,6 +131,7 @@
    "verified": false,
    "checked": "2026-11-24",
    "note": "disney says it comes to disney+ after the theatrical run; no date announced",
+   "care": false,
    "uid": "film-hexedondisney",
    "poster": "https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/DEF9F2408206140DB281400B6A0BCD89DB69A8F0E22C2CFD31850ACF6B43A314/scale?format=webp&width=1200"
   },
@@ -141,6 +149,7 @@
    "verified": true,
    "checked": "2026-11-24",
    "note": "curated screenings at taman ismail marzuki; the month's titles go up on the site",
+   "care": false,
    "uid": "film-kineforummonthlyscreenings"
   },
   {
@@ -155,6 +164,7 @@
    "verified": false,
    "checked": "2026-11-24",
    "note": "second hathaway sequel film; winter/december 2026 window reported, no confirmed indonesian date",
+   "care": false,
    "uid": "film-mobilesuitgundamhathawaythesorceryofnymphcirce"
   },
   {
@@ -169,6 +179,7 @@
    "verified": false,
    "checked": "2026-11-24",
    "note": "us release 19 mar 2027; indonesian date not announced",
+   "care": false,
    "uid": "film-sonicthehedgehog4",
    "poster": "https://dx35vtwkllhj9.cloudfront.net/paramountpictures/sonic-the-hedgehog-4/images/regions/us/share.png"
   },
@@ -184,6 +195,7 @@
    "verified": false,
    "checked": "2026-11-24",
    "note": "live-action, worldwide 30 apr 2027 per nintendo; indonesian date not announced",
+   "care": false,
    "uid": "film-thelegendofzelda",
    "poster": "https://www.nintendo.co.jp/corporate/release/en/2026/img_260908/sns.png"
   },
@@ -199,6 +211,7 @@
    "verified": false,
    "checked": "2026-11-24",
    "note": "us 23 dec 2026; indonesian date listed as 8 jan 2027 by box office mojo, not officially announced",
+   "care": false,
    "uid": "film-theangrybirdsmovie3",
    "poster": "https://cdn1.katadata.co.id/media/images/thumb/2026/11/23/Dune_Part_Three-2026_11_23-17_59_39_a34c48149f2eb1a48cc9200e1e98173e_960x640_thumb.png"
   }

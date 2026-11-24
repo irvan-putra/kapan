@@ -33,18 +33,23 @@ public final class KapanData {
 
     private static final String EVENTS_URL = "https://vanipy.com/kapan/events.json";
     private static final String FILMS_URL = "https://vanipy.com/kapan/films.json";
+    private static final String CARE_URL = "https://vanipy.com/kapan/care.json";
     private static final String PREFS = "kapan";
     private static final String KEY_FETCHED = "fetched_at";
+    private static final String KEY_MARKED = "marked_uids";
 
     public static final class Item {
+        public String uid = "";
         public String title = "";
         public long start;           // millis; 0 when undated
+        public long end;             // millis; 0 when unknown
         public boolean dateOnly;
         public String when = "";     // preformatted "wed, 25 nov · 12:00 wib"
         public String where = "";
         public String url = "";
         public String tags = "";     // preformatted "luma · online" style
         public String kind = "";     // film kind: cinema / streaming / festival / series
+        public String role = "";     // care role: hosting / going / watching
         public String note = "";
     }
 
@@ -97,12 +102,78 @@ public final class KapanData {
         return a.start <= b.start ? a : b;
     }
 
+    /** On-device "i'm going" marks, kept on this phone only. */
+    public static java.util.Set<String> marked(Context ctx) {
+        return new java.util.HashSet<>(prefs(ctx).getStringSet(KEY_MARKED,
+                new java.util.HashSet<String>()));
+    }
+
+    public static boolean isMarked(Context ctx, String uid) {
+        return !uid.isEmpty() && marked(ctx).contains(uid);
+    }
+
+    public static void toggleMark(Context ctx, String uid) {
+        if (uid.isEmpty()) return;
+        java.util.Set<String> m = marked(ctx);
+        if (!m.remove(uid)) m.add(uid);
+        prefs(ctx).edit().putStringSet(KEY_MARKED, m).apply();
+    }
+
+    /**
+     * Personal countdown list: the published care picks (hosted/going events,
+     * care films) merged with on-device marks, upcoming first.
+     */
+    public static List<Item> careItems(Context ctx, long nowMillis) {
+        List<Item> out = new ArrayList<>();
+        try {
+            parseCare(readCache(ctx, "care.json"), out);
+        } catch (Exception ignored) {
+            // no or broken care cache: on-device marks still apply
+        }
+        java.util.Set<String> have = new java.util.HashSet<>();
+        for (Item it : out) if (!it.uid.isEmpty()) have.add(it.uid);
+        java.util.Set<String> marks = marked(ctx);
+        if (!marks.isEmpty()) {
+            for (String aud : new String[]{AUD_DEVELOPERS, AUD_MOVIEGOERS}) {
+                for (Item it : items(ctx, aud)) {
+                    if (it.uid.isEmpty() || have.contains(it.uid) || !marks.contains(it.uid)) continue;
+                    it.role = "going (this phone)";
+                    it.kind = AUD_MOVIEGOERS.equals(aud) ? "film" : "event";
+                    out.add(it);
+                    have.add(it.uid);
+                }
+            }
+        }
+        List<Item> upcoming = new ArrayList<>();
+        for (Item it : out) {
+            if (it.start <= 0) continue;
+            long horizon = it.end > 0 ? it.end
+                    : it.start + (it.dateOnly ? 20L * 3_600_000L : 3L * 3_600_000L);
+            if (horizon > nowMillis) upcoming.add(it);
+        }
+        upcoming.sort((a, b) -> Long.compare(a.start, b.start));
+        return upcoming;
+    }
+
+    /** Next care item still ahead of now; kind null means any kind. */
+    public static Item nextCare(Context ctx, String kind, long nowMillis) {
+        Item best = null;
+        for (Item it : careItems(ctx, nowMillis)) {
+            if (it.start <= nowMillis) continue;
+            if (kind != null && !kind.equals(it.kind)) continue;
+            if (best == null || it.start < best.start) best = it;
+        }
+        return best;
+    }
+
     /** Download both listings into the cache. Returns an error text or null. */
     public static String fetch(Context ctx) {
         String err = null;
         err = download(EVENTS_URL, new File(ctx.getFilesDir(), "events.json"));
         String err2 = download(FILMS_URL, new File(ctx.getFilesDir(), "films.json"));
         if (err == null) err = err2;
+        // care picks are optional: a failed download keeps the previous cache
+        download(CARE_URL, new File(ctx.getFilesDir(), "care.json"));
         if (err == null) {
             prefs(ctx).edit().putLong(KEY_FETCHED, System.currentTimeMillis()).apply();
         }
@@ -163,8 +234,11 @@ public final class KapanData {
         for (int i = 0; i < events.length(); i++) {
             JSONObject e = events.getJSONObject(i);
             Item it = new Item();
+            it.uid = e.optString("uid");
             it.title = e.optString("title");
             it.start = parseIso(e.optString("start"));
+            it.end = parseIso(e.optString("end"));
+            it.kind = "event";
             boolean online = e.optBoolean("online");
             String venue = e.optString("venue");
             it.where = online ? "online" : (venue.isEmpty() ? "venue to be announced" : venue);
@@ -188,8 +262,10 @@ public final class KapanData {
         for (int i = 0; i < films.length(); i++) {
             JSONObject f = films.getJSONObject(i);
             Item it = new Item();
+            it.uid = f.optString("uid");
             it.title = f.optString("title");
             it.start = parseIso(f.optString("start"));
+            it.end = parseIso(f.optString("end"));
             it.dateOnly = true;
             String kind = f.optString("kind");
             it.kind = kind;
@@ -208,6 +284,26 @@ public final class KapanData {
             it.tags = String.join(" · ", tags);
             it.note = f.optString("note");
             it.when = it.start > 0 ? Format.day(it.start) : "date unconfirmed";
+            out.add(it);
+        }
+    }
+
+    private static void parseCare(String json, List<Item> out) throws Exception {
+        if (json.isEmpty()) return;
+        JSONArray items = new JSONObject(json).getJSONArray("items");
+        for (int i = 0; i < items.length(); i++) {
+            JSONObject c = items.getJSONObject(i);
+            Item it = new Item();
+            it.uid = c.optString("uid");
+            it.title = c.optString("title");
+            it.start = parseIso(c.optString("start"));
+            it.end = parseIso(c.optString("end"));
+            it.dateOnly = c.optBoolean("date_only");
+            it.url = c.optString("url");
+            it.kind = c.optString("kind");
+            it.role = c.optString("role");
+            it.where = c.optString("where");
+            it.when = it.start > 0 ? Format.when(it.start, it.dateOnly) : "";
             out.add(it);
         }
     }

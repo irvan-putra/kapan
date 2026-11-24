@@ -46,6 +46,19 @@ public final class Format {
         return "in " + m + "m";
     }
 
+    /** Live clock countdown: "3d 04:12:33", "04:12:33". */
+    public static String clockUntil(long nowMillis, long targetMillis) {
+        long ms = Math.max(0L, targetMillis - nowMillis);
+        long s = ms / 1000;
+        long d = s / 86400;
+        s %= 86400;
+        long h = s / 3600;
+        long m = (s % 3600) / 60;
+        long sec = s % 60;
+        String clock = String.format(Locale.US, "%02d:%02d:%02d", h, m, sec);
+        return d > 0 ? d + "d " + clock : clock;
+    }
+
     /** One number for the 1x1 widget: hours when under two days, else days. */
     public static String untilNumber(long nowMillis, long targetMillis) {
         long ms = Math.max(0L, targetMillis - nowMillis);

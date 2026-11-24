@@ -30,6 +30,30 @@ public class MainActivity extends Activity {
     private TextView status;
     private String audience = KapanData.AUD_DEVELOPERS;
     private final java.util.Map<String, Button> tabButtons = new java.util.LinkedHashMap<>();
+    private final android.os.Handler ticker = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final List<TextView> countdownViews = new ArrayList<>();
+    private final List<Long> countdownTargets = new ArrayList<>();
+    private final Runnable tick = new Runnable() {
+        @Override public void run() {
+            long now = System.currentTimeMillis();
+            for (int i = 0; i < countdownViews.size(); i++) {
+                countdownViews.get(i).setText(Format.clockUntil(now, countdownTargets.get(i)));
+            }
+            ticker.postDelayed(this, 1000);
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ticker.post(tick);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ticker.removeCallbacks(tick);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +151,8 @@ public class MainActivity extends Activity {
         }
         content.removeAllViews();
 
+        addCarePanel();
+
         Button refresh = new Button(this);
         refresh.setText("refresh");
         refresh.setOnClickListener(v -> refresh(true));
@@ -168,6 +194,82 @@ public class MainActivity extends Activity {
                 + "every card opens its own source page.");
         Ui.pad(foot, this, 8, 20, 8, 8);
         content.addView(foot);
+    }
+
+    /** Personal countdowns: published care picks plus on-device going marks. */
+    private void addCarePanel() {
+        long now = System.currentTimeMillis();
+        countdownViews.clear();
+        countdownTargets.clear();
+        List<KapanData.Item> care = KapanData.careItems(this, now);
+        if (care.isEmpty()) return;
+        LinearLayout panel = new LinearLayout(this);
+        panel.setOrientation(LinearLayout.VERTICAL);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(Ui.PANEL);
+        bg.setCornerRadius(Ui.dp(this, 12));
+        bg.setStroke(Ui.dp(this, 1), Ui.ACCENT2);
+        panel.setBackground(bg);
+        Ui.pad(panel, this, 12, 10, 12, 10);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(Ui.dp(this, 4), Ui.dp(this, 4), Ui.dp(this, 4), Ui.dp(this, 8));
+        panel.setLayoutParams(lp);
+
+        TextView h = Ui.text(this, 12, Ui.ACCENT2, Typeface.BOLD);
+        h.setText("YOUR COUNTDOWNS");
+        h.setLetterSpacing(0.12f);
+        Ui.pad(h, this, 0, 0, 0, 6);
+        panel.addView(h);
+
+        int shown = 0;
+        for (KapanData.Item it : care) {
+            if (shown >= 5) break;
+            shown++;
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.VERTICAL);
+            Ui.pad(row, this, 0, 6, 0, 6);
+
+            TextView t = Ui.text(this, 14, Ui.TEXT, Typeface.BOLD);
+            t.setText(it.title);
+            row.addView(t);
+
+            StringBuilder meta = new StringBuilder(it.when);
+            if (!it.where.isEmpty()) meta.append(" · ").append(it.where);
+            if (!it.role.isEmpty()) meta.append(" · ").append(it.role);
+            TextView m = Ui.text(this, 11, Ui.DIM, Typeface.NORMAL);
+            m.setText(meta.toString());
+            row.addView(m);
+
+            TextView cd = Ui.text(this, 18, Ui.ACCENT, Typeface.BOLD);
+            cd.setText(Format.clockUntil(now, it.start));
+            row.addView(cd);
+            countdownViews.add(cd);
+            countdownTargets.add(it.start);
+
+            if (!it.url.isEmpty()) {
+                row.setOnClickListener(v ->
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(it.url))));
+            }
+            panel.addView(row);
+        }
+
+        Button tell = new Button(this);
+        tell.setText("tell instinct about an event");
+        tell.setAllCaps(false);
+        tell.setTextSize(12f);
+        tell.setOnClickListener(v -> tellInstinct());
+        panel.addView(tell);
+
+        content.addView(panel);
+    }
+
+    /** Nudge path: hands him a share sheet so he can send the event to Instinct. */
+    private void tellInstinct() {
+        Intent send = new Intent(Intent.ACTION_SEND);
+        send.setType("text/plain");
+        send.putExtra(Intent.EXTRA_TEXT, "kapan: please count this event for me - ");
+        startActivity(Intent.createChooser(send, "tell instinct"));
     }
 
     private void addFilmSection(LinearLayout content, String title, List<KapanData.Item> items,
@@ -228,6 +330,24 @@ public class MainActivity extends Activity {
             n.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
             n.setText(it.note);
             card.addView(n);
+        }
+
+        if (!it.uid.isEmpty() && it.start > 0) {
+            Button mark = new Button(this);
+            mark.setAllCaps(false);
+            mark.setTextSize(12f);
+            mark.setText(KapanData.isMarked(this, it.uid) ? "\u2605 going" : "\u2606 i'm going");
+            mark.setOnClickListener(v -> {
+                KapanData.toggleMark(this, it.uid);
+                if (KapanData.isMarked(this, it.uid)) {
+                    Toast.makeText(this,
+                            "counted on this phone - 'tell instinct' above adds it everywhere",
+                            Toast.LENGTH_LONG).show();
+                }
+                render();
+                KapanWidget.updateAll(this);
+            });
+            card.addView(mark);
         }
 
         if (!it.url.isEmpty()) {

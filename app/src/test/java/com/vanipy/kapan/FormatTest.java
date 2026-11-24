@@ -44,6 +44,23 @@ public class FormatTest {
     }
 
     @Test
+    public void clockUntilWithDays() {
+        long target = NOW + 3L * 86_400_000L + 4L * 3_600_000L + 12L * 60_000L + 33_000L;
+        assertEquals("3d 04:12:33", Format.clockUntil(NOW, target));
+    }
+
+    @Test
+    public void clockUntilUnderADay() {
+        long target = NOW + 5L * 3_600_000L + 2L * 60_000L + 7_000L;
+        assertEquals("05:02:07", Format.clockUntil(NOW, target));
+    }
+
+    @Test
+    public void clockUntilPastIsZero() {
+        assertEquals("00:00:00", Format.clockUntil(NOW, NOW - 1_000L));
+    }
+
+    @Test
     public void whenDateOnlyOmitsTime() {
         assertEquals(Format.day(NOW), Format.when(NOW, true));
     }

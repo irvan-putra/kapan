@@ -151,6 +151,22 @@
    "label": "moviegoers"
   }
  },
+ "care": {
+  "events": [
+   {
+    "title": "Build 24/7 AI Team for Your Businesses | Road to SCALECON 2027",
+    "url": "https://lu.ma/nqv9479h",
+    "role": "hosting",
+    "checked": "2026-11-24"
+   },
+   {
+    "title": "10 Tahun PyJogja Conference",
+    "url": "https://luma.com/zxru86nc",
+    "role": "going",
+    "checked": "2026-11-24"
+   }
+  ]
+ },
  "films": [
   {
    "title": "Festival Sinema Prancis 2026",
@@ -171,6 +187,7 @@
    "title": "Hexed",
    "kind": "cinema",
    "cities": [],
+   "care": true,
    "start": "2026-11-27",
    "url": "https://m.21cineplex.com/movies/26HEXD",
    "source": "cinema xxi",
@@ -240,6 +257,7 @@
    "title": "Avengers: Doomsday",
    "kind": "cinema",
    "cities": [],
+   "care": true,
    "start": "2026-12-16",
    "url": "https://www.disney.id/movies/avengers-doomsday",
    "source": "disney indonesia",

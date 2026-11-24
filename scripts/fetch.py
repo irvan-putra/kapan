@@ -28,6 +28,7 @@ MAX_HTTP = 40  # hard cap on requests per run, keeps Actions usage small
 
 ONLINE_TERMS = ["online", "virtual", "zoom", "google meet", "webinar", "livestream",
                 "live stream", "youtube", "discord", "remote", "daring"]
+LUMA_URL_RE = re.compile(r"lu(?:ma\.com|\.ma)/([A-Za-z0-9]+)")
 TBD_TERMS = ["tbd", "tba", "to be announced", "to be determined", "menyusul"]
 OTHER_CITY_RE = re.compile(r"\b(bali|denpasar|bandung|surabaya|semarang|medan|malang|makassar|singapore|kuala lumpur|bangkok|manila|batam|palembang)\b")
 
@@ -63,6 +64,44 @@ def fetch_og_image(url):
     if u.startswith("https://"):
         return u
     return None
+
+
+def fetch_luma_page_event(url):
+    """Public Luma event page -> facts from its embedded __NEXT_DATA__."""
+    try:
+        text = http_get(url, "text/html")
+    except Exception:
+        return None
+    m = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', text, re.S)
+    if not m:
+        return None
+    try:
+        data = json.loads(m.group(1))
+        ev = data["props"]["pageProps"]["initialData"]["data"]["event"]
+    except Exception:
+        return None
+    if not isinstance(ev, dict) or not ev.get("start_at"):
+        return None
+    try:
+        start = datetime.fromisoformat(ev["start_at"].replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    end = None
+    if ev.get("end_at"):
+        try:
+            end = datetime.fromisoformat(ev["end_at"].replace("Z", "+00:00"))
+        except ValueError:
+            pass
+    geo = ev.get("geo_address_info") or {}
+    loc_text = geo.get("address") or geo.get("city_state") or geo.get("city") or geo.get("full_address") or ""
+    online = ev.get("location_type") in ("online", "virtual")
+    return {
+        "title": ev.get("name") or "",
+        "start": iso(start), "end": iso(end) if end else None,
+        "online": online, "venue": None if online else (loc_text or None),
+        "url": url, "poster": ev.get("cover_url"),
+        "uid": f"luma-{ev.get('api_id')}" if ev.get("api_id") else None,
+    }
 
 
 def fetch_luma_event(api_id):
@@ -461,6 +500,7 @@ def load_films(cfg, prev_films):
             "verified": bool(f.get("verified")),
             "checked": f.get("checked"),
             "note": f.get("note") or "",
+            "care": bool(f.get("care")),
             "uid": "film-" + norm(f.get("title") or ""),
         })
     prev_posters = {pf["uid"]: pf["poster"] for pf in prev_films
@@ -474,6 +514,82 @@ def load_films(cfg, prev_films):
 
 
 # ---------------- main ----------------
+
+def load_care(cfg, final_events, films):
+    """Hand-picked countdown list: events the maintainer hosts or is going to
+    (care.events in sources.json, public titles/dates/links only), plus films
+    flagged care. Enriched from the fetched listings when the event is already
+    tracked; otherwise read from its public Luma page."""
+    items = []
+    cutoff = NOW - timedelta(days=1)
+    by_slug = {}
+    for ev in final_events:
+        mslug = LUMA_URL_RE.search(ev.get("url") or "")
+        if mslug:
+            by_slug[mslug.group(1)] = ev
+    for c in (cfg.get("care") or {}).get("events", []):
+        url = c.get("url") or ""
+        role = c.get("role") or "going"
+        slug_m = LUMA_URL_RE.search(url)
+        ev = by_slug.get(slug_m.group(1)) if slug_m else None
+        if ev is None and c.get("title"):
+            nt = norm(c["title"])
+            ev = next((cand for cand in final_events if norm(cand["title"]) == nt), None)
+        if ev is None and slug_m and _http_count < MAX_HTTP:
+            ev = fetch_luma_page_event(url)
+        if ev is None:
+            start = parse_day(c.get("start"))
+            if not start:
+                continue  # nothing verifiable to count down to
+            ev = {"title": c.get("title") or "", "start": iso(start), "end": None,
+                  "url": url, "venue": None, "online": False, "poster": None, "uid": None}
+        if not ev.get("start"):
+            continue
+        try:
+            start_dt = datetime.fromisoformat(ev["start"].replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        end_dt = None
+        if ev.get("end"):
+            try:
+                end_dt = datetime.fromisoformat(ev["end"].replace("Z", "+00:00"))
+            except ValueError:
+                pass
+        if (end_dt or start_dt) < cutoff:
+            continue
+        items.append({
+            "uid": ev.get("uid") or f"care-{norm(c.get('title') or ev['title'])}-{ev['start'][:10]}",
+            "title": ev["title"], "start": ev["start"], "end": ev.get("end"),
+            "kind": "event", "role": role, "url": ev.get("url") or url,
+            "where": "online" if ev.get("online") else (ev.get("venue") or ""),
+            "poster": ev.get("poster"), "date_only": False,
+        })
+    for f in films:
+        if not f.get("care") or not f.get("start"):
+            continue
+        start_dt = datetime.fromisoformat(f["start"].replace("Z", "+00:00"))
+        end_dt = None
+        if f.get("end"):
+            try:
+                end_dt = datetime.fromisoformat(f["end"].replace("Z", "+00:00"))
+            except ValueError:
+                pass
+        if (end_dt or start_dt) < cutoff:
+            continue
+        if f["kind"] == "cinema":
+            where = "cinemas across indonesia"
+        elif f["kind"] == "streaming":
+            where = "streaming"
+        else:
+            where = " · ".join(f.get("cities") or []) or "indonesia"
+        items.append({
+            "uid": f["uid"], "title": f["title"], "start": f["start"], "end": f.get("end"),
+            "kind": "film", "role": "watching", "url": f.get("url") or "",
+            "where": where, "poster": f.get("poster"), "date_only": True,
+        })
+    items.sort(key=lambda i: i["start"])
+    return items
+
 
 def main():
     global prev_last
@@ -596,6 +712,11 @@ def main():
                  "timezone": "Asia/Jakarta", "films": films}
     old_films_path.write_text(json.dumps(films_out, indent=1, ensure_ascii=False))
 
+    care_items = load_care(cfg, final, films)
+    care_out = {"app": APP_NAME, "generated_at": iso(NOW),
+                "timezone": "Asia/Jakarta", "items": care_items}
+    (SITE / "care.json").write_text(json.dumps(care_out, indent=1, ensure_ascii=False))
+
     out = {
         "app": APP_NAME, "repo": REPO, "generated_at": iso(NOW),
         "timezone": "Asia/Jakarta", "window_days": WINDOW_DAYS,
@@ -644,6 +765,7 @@ def main():
     tpl = (ROOT / "scripts" / "template.html").read_text()
     data_json = json.dumps(out, ensure_ascii=False).replace("</", "<\\/")
     films_json = json.dumps(films_out, ensure_ascii=False).replace("</", "<\\/")
+    care_json = json.dumps(care_out, ensure_ascii=False).replace("</", "<\\/")
     audiences_json = json.dumps(cfg.get("audiences") or
         {"developers": {"label": "developers"}, "moviegoers": {"label": "moviegoers"}},
         ensure_ascii=False)
@@ -651,6 +773,7 @@ def main():
         page = tpl.replace("__APPNAME__", APP_NAME).replace("__REPO__", REPO) \
                   .replace("__DATAJSON__", data_json).replace("__CITY__", city) \
                   .replace("__FILMSJSON__", films_json) \
+                  .replace("__CAREJSON__", care_json) \
                   .replace("__AUDIENCESJSON__", audiences_json) \
                   .replace("__BASE__", "/" + APP_NAME + ("/" + sub if sub else ""))
         d = SITE / sub
@@ -658,7 +781,7 @@ def main():
         (d / "index.html").write_text(page)
 
     ok = sum(1 for s in source_log if s.get("ok"))
-    print(f"{len(final)} events ({posters} with posters), {len(films)} films, {ok}/{len(source_log)} sources ok, {_http_count} requests")
+    print(f"{len(final)} events ({posters} with posters), {len(films)} films, {len(care_items)} care items, {ok}/{len(source_log)} sources ok, {_http_count} requests")
     for s in source_log:
         flag = "ok" if s.get("ok") else f"FAIL {s.get('error')}"
         print(f"  {s['id']}: {flag}, {s.get('count')} events" + (f" (kept {s['kept_stale']} stale)" if s.get("kept_stale") else ""))

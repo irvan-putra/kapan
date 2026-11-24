@@ -11,9 +11,9 @@ android app (APK + home-screen widget): [latest release](https://github.com/irva
 ## how it works
 
 - a github actions job runs monthly (and on demand); github may delay scheduled runs, so events can be up to a month stale unless refreshed manually
-- `scripts/fetch.py` (python, standard library only) reads `sources.json`, fetches each source, and rewrites `site/events.json`, `site/films.json`, `site/events.ics` and the static pages
+- `scripts/fetch.py` (python, standard library only) reads `sources.json`, fetches each source, and rewrites `site/events.json`, `site/films.json`, `site/care.json`, `site/events.ics` and the static pages
 - github pages serves `site/` - fully static, no server, no keys, no accounts
-- the next event/film countdown sits above the list; the tab choice sticks (url hash + saved preference)
+- hand-picked countdowns (hosted/going events from `care.events`, films flagged `care`) tick above the list; the next event/film countdown sits above the list too; the tab choice sticks (url hash + saved preference)
 
 ## sources
 
@@ -29,7 +29,7 @@ moviegoer entries are hand-tracked in `sources.json`: cinema chains (xxi, cgv, c
 
 ## android app
 
-`app/` builds `com.vanipy.kapan`: the same two tabs over the public listings, cached on the phone for offline reading, plus a resizable home-screen widget (1x1 circular countdown, larger sizes show the next event and film date). one permission (INTERNET). releases are signed with the kapan key (secrets in this repo's actions secrets; keystore backup in the private cadang repo per the family rule) and gated by patuh.
+`app/` builds `com.vanipy.kapan`: the same two tabs over the public listings, cached on the phone for offline reading, plus a personal countdown panel (published care picks + on-device "i'm going" marks, with a "tell instinct" share to add more) and a resizable home-screen widget (1x1 circular countdown, larger sizes show your next event and film). one permission (INTERNET). releases are signed with the kapan key (secrets in this repo's actions secrets; keystore backup in the private cadang repo per the family rule) and gated by patuh.
 
 ## honest limits
 
