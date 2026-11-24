@@ -10,7 +10,9 @@ import java.util.List;
 
 /**
  * Scrollable row source for the large widget: every pick (no cap), or the
- * next developer event and film when nothing is picked. The list scrolls, so
+ * next developer event and film when nothing is picked. Pick rows carry no
+ * prefix - they are all his - while the fallback rows keep their "dev"/"film"
+ * tags because that is the only place two kinds can mix. The list scrolls, so
  * any number of picks fits; rows beyond the visible area are one swipe away.
  * Rows restate their countdown when the widget redraws (about every 30
  * minutes on the OS tick, plus app opens and refreshes), the same limit as
@@ -46,7 +48,7 @@ public class KapanWidgetService extends RemoteViewsService {
             List<KapanData.Item> care = KapanData.careItems(ctx, now);
             if (!care.isEmpty()) {
                 for (KapanData.Item it : care) {
-                    rows.add(make("yours · " + it.title, it, now,
+                    rows.add(make(it.title, it, now,
                             "film".equals(it.kind) ? 0xFF7EC3E0 : 0xFF7EE0A3));
                 }
                 return;
