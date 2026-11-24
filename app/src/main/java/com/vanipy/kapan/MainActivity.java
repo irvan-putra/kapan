@@ -59,35 +59,36 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(Ui.BG);
+        // one full-page ScrollView holding everything: no fixed header and no
+        // weight tricks, so the whole screen always scrolls like a web page
+        LinearLayout page = new LinearLayout(this);
+        page.setOrientation(LinearLayout.VERTICAL);
+        page.setBackgroundColor(Ui.BG);
 
         TextView head = Ui.text(this, 13, Ui.DIM, Typeface.NORMAL);
         head.setText("kapan - what's on in jakarta & jogja");
         Ui.pad(head, this, 16, 14, 16, 4);
-        root.addView(head);
+        page.addView(head);
 
         LinearLayout tabs = new LinearLayout(this);
         tabs.setOrientation(LinearLayout.HORIZONTAL);
         Ui.pad(tabs, this, 12, 6, 12, 2);
         addTab(tabs, "developers", KapanData.AUD_DEVELOPERS);
         addTab(tabs, "moviegoers", KapanData.AUD_MOVIEGOERS);
-        root.addView(tabs);
+        page.addView(tabs);
 
         status = Ui.text(this, 12, Ui.DIM, Typeface.NORMAL);
         Ui.pad(status, this, 16, 2, 16, 2);
-        root.addView(status);
+        page.addView(status);
 
-        ScrollView scroll = new ScrollView(this);
         content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
         Ui.pad(content, this, 12, 4, 12, 24);
-        scroll.addView(content);
-        root.addView(scroll, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        page.addView(content);
 
-        setContentView(root);
+        ScrollView scroll = new ScrollView(this);
+        scroll.addView(page);
+        setContentView(scroll);
         render();
         if (System.currentTimeMillis() - KapanData.lastFetched(this) > STALE_MS
                 || !KapanData.hasCareCache(this)) {
@@ -226,10 +227,8 @@ public class MainActivity extends Activity {
         Ui.pad(sub, this, 0, 0, 0, 6);
         panel.addView(sub);
 
-        int shown = 0;
+        // every pick, no cap - the page scrolls
         for (KapanData.Item it : care) {
-            if (shown >= 5) break;
-            shown++;
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.VERTICAL);
             Ui.pad(row, this, 0, 6, 0, 6);
