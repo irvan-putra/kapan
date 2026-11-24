@@ -46,3 +46,7 @@ edit `sources.json` (add a meetup group slug, a luma calendar id, or a film entr
 ## license
 
 agpl-3.0. see LICENSE.
+
+---
+
+Built with AI assistance (Instinct and others). Not everything has been reviewed by Irvan.
