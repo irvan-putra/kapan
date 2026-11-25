@@ -256,7 +256,7 @@ public final class KapanData {
             String src = e.optString("source");
             if (!src.isEmpty()) tags.add(src);
             it.tags = String.join(" · ", tags);
-            it.when = Format.when(it.start, false);
+            it.when = it.start > 0 ? Format.when(it.start, false) : "";
             out.add(it);
         }
     }
