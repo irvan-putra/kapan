@@ -62,7 +62,9 @@ public class KapanWidgetService extends RemoteViewsService {
         private static Row make(String title, KapanData.Item it, long now, int color) {
             Row r = new Row();
             r.title = title;
-            r.when = Format.when(it.start, it.dateOnly) + " · " + Format.untilShort(now, it.start);
+            r.when = it.start > 0
+                    ? Format.when(it.start, it.dateOnly) + " · " + Format.untilShort(now, it.start)
+                    : "";
             r.color = color;
             return r;
         }
